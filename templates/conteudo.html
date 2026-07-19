@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<hr>
+Alternativa 1:
+<h1>Laços de Repetição</h1>
+<div>
+    <h2>Material 1 - Slides da Aula</h2>
+    <a href="">exemplo.com/blablalbalbalbal</a>
+</div>
+<div>
+    <h2>Material 2 - Vídeoaula</h2>
+    <a href="">youtube.com/blablalbalbalbal</a>
+</div>
+
+<hr>
+Alternativa 2:
+<h1>{{titulo}}</h1>
+{% for m in materiais %}
+<div>
+    <h2>Material - {{m.titulo}}</h2>
+    <a href="">{{m.url}}</a>
+</div>
+{% endfor %}
+{% endblock %}
