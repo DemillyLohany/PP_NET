@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+{% endblock %}
+
+{% block main %}
+<section id="conteudo" class="section is-hidden">
+  <div class="container">
+    <div class="content">
+      <h2>Bem-vindo ao N.E.T.</h2>
+      <p>Olá, <span id="nome-usuario" class="has-text-weight-bold">Carregando...</span>!</p>
+      
+      <div class="buttons">
+        <a href="/disciplinas" class="button is-link">Ver Minhas Disciplinas</a>
+        <button type="button" class="button is-danger" id="suap-logout-button">Sair</button>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="{{ url_for('static', filename='js.cookie.js') }}"></script>
+  <script src="{{ url_for('static', filename='settings.js') }}"></script>
+  <script src="{{ url_for('static', filename='client.js') }}"></script>
+  
+  <script>
+    // serve para iniciar a comunicacao com o suap
+    var suap = new SuapClient(SUAP_URL, CLIENT_ID, HOME_URI, REDIRECT_URI, SCOPE);
+    suap.init();
+
+    // faz a checagem se o usuario realmente logou
+    if (suap.isAuthenticated()) {
+      $(document).ready(function () {
+        // serve para mostrar a tela depois que o login deu certo
+        $('#conteudo').removeClass("is-hidden");
+        
+        // faz a busca dos dados do usuario dentro do suap
+        suap.getResource(suap.getToken().getScope(), function (response) {
+            // serve para colocar o nome do usuario na tela
+            $("#nome-usuario").text(response.nome_usual || response.nome);
+        });
+      });
+
+      // serve para deslogar o usuario quando ele clicar no botao
+      $("#suap-logout-button").click(function(){
+          suap.logout();
+      });
+    } else {
+      // faz o sistema expulsar quem nao esta logado
+      alert('A autenticação via SUAP falhou.');
+      window.location = HOME_URI;
+    }
+  </script>
+{% endblock %}

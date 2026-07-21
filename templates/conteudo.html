@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block main %}
-<hr>
+<!-- <hr>
 Alternativa 1:
 <h1>Laços de Repetição</h1>
 <div>
@@ -11,15 +11,47 @@ Alternativa 1:
 <div>
     <h2>Material 2 - Vídeoaula</h2>
     <a href="">youtube.com/blablalbalbalbal</a>
+</div> -->
+<hr>
+
+<div>
+    <h3>[Modo Edição] Criar Novo Conteúdo para esta Disciplina</h3>
+    <form action="" method="POST">
+        <p><input type="text" placeholder="Título do Conteúdo (Ex: Laços de Repetição)" style="width: 100%; padding: 8px; margin-bottom: 10px;"></p>
+        <button type="submit" style="padding: 8px 15px; cursor: pointer;">Salvar Conteúdo</button>
+    </form>
 </div>
 
-<hr>
-Alternativa 2:
-<h1>{{titulo}}</h1>
-{% for m in materiais %}
+{% for c in conteudos %}
 <div>
-    <h2>Material - {{m.titulo}}</h2>
-    <a href="">{{m.url}}</a>
+    
+    <div>
+        <h1>{{ c.titulo }}</h1>
+        <button type="button" >[Excluir Conteúdo]</button>
+    </div>
+    
+    {% for m in c.materiais %}
+    <div>
+        <div>
+            <h2>Material - {{ m.titulo }}</h2>
+            <a href="{{ m.url }}" target="_blank">{{ m.url }}</a>
+        </div>
+        <button type="button">[Excluir Material]</button>
+    </div>
+    {% endfor %}
+
+    <div >
+        <h4>[Modo Edição] Adicionar Material a este Conteúdo</h4>
+        <form action="" method="POST">
+            <input type="text" placeholder="Título do Material" style="padding: 5px; margin-right: 5px;">
+            <input type="text" placeholder="URL do Material" style="padding: 5px; margin-right: 5px;">
+            <button type="submit" style="padding: 5px 10px; cursor: pointer;">Anexar Material</button>
+        </form>
+    </div>
+    
 </div>
+{% else %}
+<p>Nenhum conteúdo cadastrado para esta disciplina ainda.</p>
 {% endfor %}
+
 {% endblock %}

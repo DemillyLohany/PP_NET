@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<hr>
+<h1>Minhas Disciplinas</h1>
+
+{% for d in lista_disciplinas %}
+<div style="margin-bottom: 20px;">
+    <h2>{{ d.nome }}</h2>
+    <p>{{ d.descricao }}</p>
+    <a href="/conteudo/{{ d.id }}">Acessar Conteúdos</a>
+</div>
+{% endfor %}
+{% endblock %}
