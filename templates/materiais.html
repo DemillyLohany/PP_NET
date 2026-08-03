@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<hr>
+
+{% if conteudo %}
+    <a href="{{ url_for('conteudos.conteudo', disciplina_id=conteudo.disciplina_id) }}">← Voltar para Conteúdos</a>
+    
+    <h1>Materiais de: {{ conteudo.titulo }}</h1>
+
+    {% for m in conteudo.materiais %}
+    <div>
+        <div>
+            <h2>Material - {{ m.titulo }}</h2>
+            <a href="{{ m.url }}" target="_blank">{{ m.url }}</a>
+        </div>
+        <form action="{{ url_for('materiais.excluir_material', conteudo_id=conteudo.id, index=loop.index0) }}" method="POST">
+            <button type="submit">[Excluir Material]</button>
+        </form>
+    </div>
+    {% else %}
+    <p>Nenhum material anexado a este conteúdo ainda.</p>
+    {% endfor %}
+
+    <div>
+        <h4>[Modo Edição] Adicionar Material a este Conteúdo</h4>
+        <form action="{{ url_for('materiais.adicionar_material', conteudo_id=conteudo.id) }}" method="POST">
+            <input type="text" name="titulo" placeholder="Título do Material" required>
+            <input type="text" name="url" placeholder="URL do Material" required>
+            <button type="submit">Anexar Material</button>
+        </form>
+    </div>
+{% else %}
+    <p>Conteúdo não encontrado.</p>
+{% endif %}
+
+{% endblock %}

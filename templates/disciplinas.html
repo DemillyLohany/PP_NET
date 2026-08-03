@@ -5,10 +5,12 @@
 <h1>Minhas Disciplinas</h1>
 
 {% for d in lista_disciplinas %}
-<div style="margin-bottom: 20px;">
+<div>
     <h2>{{ d.nome }}</h2>
     <p>{{ d.descricao }}</p>
-    <a href="/conteudo/{{ d.id }}">Acessar Conteúdos</a>
+    <a href="{{ url_for('conteudos.conteudo', disciplina_id=d.id) }}">Acessar Disciplina</a>
 </div>
+{% endfor %}
+
 {% endfor %}
 {% endblock %}
