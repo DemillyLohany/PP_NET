@@ -13,10 +13,12 @@
 {% block body %}
   <nav>
     {% block nav %}
-    <a href="">Link 1</a>
-    <a href="">Link 2</a>
-    <a href="">Link 3</a>
-    <a href="">Link 4</a>
+    <a href="{{ url_for('dashboard') }}">Home</a>
+
+    <a href="{{ url_for('disciplinas.disciplinas') }}">Disciplinas</a>
+
+    <a href="{{ url_for('perfil.exibir_perfil') }}">Perfil</a>
+
     {% endblock %}
   </nav>
 

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<hr>
+
+<h2>Perfil do Usuário</h2>
+
+<div>
+    <div>
+        <div onclick="alternarFormularioFoto()" title="Clique para alterar a foto" style="cursor: pointer;">
+            <img 
+                id="foto-perfil" 
+                src="{{ foto_atual if foto_atual else 'https://ui-avatars.com/api/?name=' ~ (usuario.nome if usuario else 'Usuario') }}" 
+                alt="Foto de Perfil" width="120" height="120">
+        </div>
+
+        <h3 id="usuario-nome">{{ usuario.nome if usuario else 'Carregando...' }}</h3>
+    </div>
+
+    <div id="form-foto" style="display: none;">
+        <h4>Alterar Link da Foto</h4>
+        <form action="{{ url_for('perfil.atualizar_foto') }}" method="POST">
+            <p>
+                <label for="foto_url">URL da Nova Foto:</label><br>
+                <input 
+                    type="url" 
+                    id="foto_url" 
+                    name="foto_url" 
+                    value="{{ foto_atual if foto_atual else '' }}" 
+                    placeholder="https://exemplo.com/minha-foto.jpg" 
+                    required
+                >
+            </p>
+            <button type="submit">Salvar</button>
+            <button type="button" onclick="alternarFormularioFoto()">Cancelar</button>
+        </form>
+    </div>
+
+    <hr>
+
+    <div>
+        <h3>Informações do usuário</h3>
+        <p><strong>Matrícula:</strong> <span id="usuario-matricula">{{ usuario.matricula if usuario else '-' }}</span></p> 
+        <p><strong>Vínculo:</strong> <span id="usuario-vinculo">{{ usuario.tipo_vinculo if usuario else '-' }}</span></p>
+        <p><strong>E-mail:</strong> <span id="usuario-email">{{ usuario.email if usuario else '-' }}</span></p>
+    </div>
+</div>
+
+<script>
+    function alternarFormularioFoto() {
+        var form = document.getElementById("form-foto");
+        if (form.style.display === "none" || form.style.display === "") {
+            form.style.display = "block";
+        } else {
+            form.style.display = "none";
+        }
+    }
+</script>
+
+{% endblock %}

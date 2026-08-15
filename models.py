@@ -4,9 +4,22 @@ from typing import List, Optional
 
 class Usuario(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+    
+    # identificação Única (do SUAP)
+    matricula: str = Field(nullable=False, unique=True, index=True)
     nome: str = Field(nullable=False)
     email: EmailStr = Field(nullable=False)
-    senha: str = Field(nullable=False)
+    
+    tipo_vinculo: str = Field(nullable=False) # Ex: "aluno", "servidor (Docente)".
+    
+    curso: Optional[str] = Field(default=None)   
+    setor: Optional[str] = Field(default=None)   
+    campus: Optional[str] = Field(default=None) 
+    
+    # Obs.: seria legal que a foto viesse do SUAP (foto_url), mas podesse ser alterada pelo usuário
+    foto_url: Optional[str] = Field(default=None)
+
+
 
 class Disciplina(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -19,10 +32,11 @@ class Disciplina(SQLModel, table=True):
 class Conteudo(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     titulo: str = Field(nullable=False)
+    descricao: Optional[str] = Field(default=None)
     
     # faz a ligacao direta deste conteudo com o id de uma disciplina
     disciplina_id: int = Field(foreign_key="disciplina.id", nullable=False)
-    
+
     # serve para acessar os dados da disciplina dona deste conteudo
     disciplina: Disciplina = Relationship(back_populates="conteudos")
     

@@ -1,38 +1,29 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for
+from dados_estaticos import buscar_conteudo, buscar_disciplina
 
 materiais_bp = Blueprint('materiais', __name__)
 
 @materiais_bp.route('/materiais/<int:conteudo_id>')
 def ver_materiais(conteudo_id):
-    from conteudos import todos_os_conteudos
+    conteudo_atual = buscar_conteudo(conteudo_id)
     
-    #busca o conteúdo especifico clicado
-    conteudo_encontrado = next((c for c in todos_os_conteudos if c['id'] == conteudo_id), None)
-    
-    return render_template('materiais.html', conteudo=conteudo_encontrado)
+    if not conteudo_atual:
+        return "Conteúdo não encontrado", 404
+        
+    disciplina_atual = buscar_disciplina(conteudo_atual['disciplina_id'])
 
-@materiais_bp.route('/material/adicionar/<int:conteudo_id>', methods=['POST'])
+    return render_template(
+        'materiais.html', disciplina=disciplina_atual, conteudo=conteudo_atual)
+
+
+# Atenção! As rotas a seguir estão incompletas e foram adicionadas para evitar erros de redirecionamento
+
+# adiciona materiais (Redireciona para atualizar a tela)
+@materiais_bp.route('/adicionar_material/<int:conteudo_id>', methods=['POST'])
 def adicionar_material(conteudo_id):
-    from conteudos import todos_os_conteudos
-    
-    titulo = request.form.get('titulo')
-    url = request.form.get('url')
-    
-    for c in todos_os_conteudos:
-        if c['id'] == conteudo_id:
-            c['materiais'].append({'titulo': titulo, 'url': url})
-            return redirect(url_for('materiais.ver_materiais', conteudo_id=conteudo_id))
-            
-    return redirect(url_for('home'))
+    return redirect(url_for('materiais.ver_materiais', conteudo_id=conteudo_id))
 
-@materiais_bp.route('/material/excluir/<int:conteudo_id>/<int:index>', methods=['POST'])
+# exclue materiais (Redireciona para atualizar a tela)
+@materiais_bp.route('/excluir_material/<int:conteudo_id>/<int:index>', methods=['POST'])
 def excluir_material(conteudo_id, index):
-    from conteudos import todos_os_conteudos
-    
-    for c in todos_os_conteudos:
-        if c['id'] == conteudo_id:
-            if 0 <= index < len(c['materiais']):
-                c['materiais'].pop(index)
-            return redirect(url_for('materiais.ver_materiais', conteudo_id=conteudo_id))
-            
-    return redirect(url_for('home'))
+    return redirect(url_for('materiais.ver_materiais', conteudo_id=conteudo_id))

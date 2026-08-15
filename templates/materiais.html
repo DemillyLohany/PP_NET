@@ -4,10 +4,33 @@
 <hr>
 
 {% if conteudo %}
-    <a href="{{ url_for('conteudos.conteudo', disciplina_id=conteudo.disciplina_id) }}">← Voltar para Conteúdos</a>
-    
-    <h1>Materiais de: {{ conteudo.titulo }}</h1>
+    <!-- Link para voltar para a lista de conteúdos -->
+    <p>
+        <a href="{{ url_for('conteudos.conteudo', disciplina_id=conteudo.disciplina_id) }}">← Voltar para Conteúdos</a>
+    </p>
 
+    <hr>
+    <!-- título no formato: Nome da Disciplina > Nome do Conteúdo -->
+    <h2>
+        {% if disciplina %}
+            {{ disciplina.nome }} &gt; {{ conteudo.titulo }}
+        {% else %}
+            {{ conteudo.titulo }}
+        {% endif %}
+    </h2>
+    <hr>
+    <div>
+        <h4>[Modo Edição] Adicionar Material a este Conteúdo</h4>
+        <form action="{{ url_for('materiais.adicionar_material', conteudo_id=conteudo.id) }}" method="POST">
+            <input type="text" name="titulo" placeholder="Título do Material" required>
+            <input type="text" name="url" placeholder="URL do Material" required>
+            <button type="submit">Anexar Material</button>
+        </form>
+    </div>
+
+    <hr>
+
+    <!-- listar materiais -->
     {% for m in conteudo.materiais %}
     <div>
         <div>
@@ -19,17 +42,9 @@
         </form>
     </div>
     {% else %}
-    <p>Nenhum material anexado a este conteúdo ainda.</p>
+        <p>Nenhum material anexado a este conteúdo ainda.</p>
     {% endfor %}
 
-    <div>
-        <h4>[Modo Edição] Adicionar Material a este Conteúdo</h4>
-        <form action="{{ url_for('materiais.adicionar_material', conteudo_id=conteudo.id) }}" method="POST">
-            <input type="text" name="titulo" placeholder="Título do Material" required>
-            <input type="text" name="url" placeholder="URL do Material" required>
-            <button type="submit">Anexar Material</button>
-        </form>
-    </div>
 {% else %}
     <p>Conteúdo não encontrado.</p>
 {% endif %}
