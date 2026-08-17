@@ -1,0 +1,103 @@
+
+.navbar {
+    background-color: #ffffff;
+    padding: 10px 20px;
+    font-family: Arial, sans-serif;
+    box-shadow: 0px 1px 3px rgba(0,0,0,0.1);
+}
+
+.menu-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.col-logo {
+    width: 30%;
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.btn-hamburger {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: #d97736; 
+    vertical-align: middle;
+    margin-right: 12px;
+    padding: 0;
+}
+
+.brand-logo {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.brand-logo .symbol {
+    color: #d97736;
+}
+
+.brand-logo .text {
+    color: #1e4072; 
+    margin: 0 1px;
+}
+
+.col-search {
+    width: 50%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.search-form {
+    margin: 0;
+    display: inline-block;
+    width: 100%;
+    max-width: 480px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    background-color: #e5e5e5;
+    border-radius: 4px;
+    padding: 6px 10px;
+}
+
+.btn-search {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #888;
+    font-size: 14px;
+    padding-right: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+.col-actions {
+    width: 20%;
+    text-align: right;
+    vertical-align: middle;
+}
+
+.action-link {
+    text-decoration: none;
+    margin-left: 18px;
+    display: inline-block;
+}
+
+.icon-btn {
+    font-size: 22px;
+    color: #d97736; /* cor dos ícones */
+}

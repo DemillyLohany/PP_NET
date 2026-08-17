@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+    <h1 align="center">{{ dados.titulo_notificacao }}</h1>
+
+    <table border="1" width="100%" cellpadding="15">
+        <tr>
+            <td>
+                <h2>{{ dados.autor_alteracao }} {{ dados.acao }}</h2>
+
+                <table border="0" width="100%" cellpadding="10">
+                    <tr valign="top">
+                        
+                        <!-- coluna da esquerda -->
+                        <td width="75%">
+                            
+                            <!-- bloco 1: texto editado -->
+                            <table border="1" width="100%" cellpadding="10">
+                                <tr>
+                                    <td>
+                                        <h3>{{ dados.conteudo_principal.titulo }}</h3>
+                                        <p>
+                                            <small>
+                                                Criado por <strong>{{ dados.conteudo_principal.autor }}</strong> 
+                                                em {{ dados.conteudo_principal.data_criacao }}. 
+                                                Última atualização {{ dados.conteudo_principal.ultima_atualizacao }}.
+                                            </small>
+                                        </p>
+                                        <h4>{{ dados.conteudo_principal.subtitulo }}</h4>
+                                        <p>{{ dados.conteudo_principal.texto }}</p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <br>
+
+                            <!-- bloco 2: anexos (ex.: vídeo) -->
+                            {% for bloco in dados.blocos_anexos %}
+                                <table border="1" width="100%" cellpadding="10">
+                                    <tr>
+                                        <td width="10%" align="center">
+                                            {% if bloco.tipo == 'video' %}
+                                                <big>▶</big>
+                                            {% elif bloco.tipo == 'quiz' %}
+                                                <big>?</big>
+                                            {% endif %}
+                                        </td>
+                                        
+                                        <!-- informações -->
+                                        <td>
+                                            <strong>{{ bloco.titulo }}</strong><br>
+                                            <a href="https://{{ bloco.link }}" target="_blank">{{ bloco.link }}</a><br>
+                                            <small>Status: <strong>{{ bloco.status }}</strong></small>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br>
+                            {% endfor %}
+
+                        </td>
+
+                        <!-- coluna da direita -->
+                        <td width="25%" align="center">
+                            <form action="#" method="POST">
+                                
+                                <p>
+                                    <button type="submit" name="acao" value="aprovar">
+                                        Aprovar ✔
+                                    </button>
+                                </p>
+
+                                <p>
+                                    <button type="submit" name="acao" value="reprovar">
+                                        Reprovar ✖
+                                    </button>
+                                </p>
+
+                                <br><br>
+
+                                <p>
+                                    <button type="button" name="acao" value="destacar">
+                                        Destacar<br>Alterações 👁
+                                    </button>
+                                </p>
+
+                            </form>
+                        </td>
+
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+    </table>
+{% endblock %}

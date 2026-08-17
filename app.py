@@ -3,6 +3,7 @@ from conteudos import conteudos_bp
 from materiais import materiais_bp
 from disciplinas import disciplinas_bp
 from perfil import perfil_bp
+from notificacoes import notificacoes_bp
 
 app = Flask(__name__)
 app.secret_key = 'super-secret-key'
@@ -12,11 +13,16 @@ app.register_blueprint(conteudos_bp)
 app.register_blueprint(materiais_bp)
 app.register_blueprint(disciplinas_bp)
 app.register_blueprint(perfil_bp)
+app.register_blueprint(notificacoes_bp)
 
 # Redireciona a raiz '/' para a tela de disciplinas
 @app.route('/')
 def home():
-    return redirect(url_for('disciplinas.disciplinas'))
+    return render_template('home.html')
+
+@app.route('/login')
+def tela_login():
+    return render_template('login.html')
 
 @app.route('/dashboard')
 def dashboard():

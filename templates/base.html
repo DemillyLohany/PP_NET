@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>N.E.T.</title>
   <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/menu.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   {% block head %}
   {% endblock %}
 </head>
@@ -13,23 +15,20 @@
 {% block body %}
   <nav>
     {% block nav %}
-    <a href="{{ url_for('dashboard') }}">Home</a>
-
-    <a href="{{ url_for('disciplinas.disciplinas') }}">Disciplinas</a>
-
-    <a href="{{ url_for('perfil.exibir_perfil') }}">Perfil</a>
-
+      <!-- Inclui o componente da pasta componentes -->
+      {% include 'componentes/menu.html' %}
     {% endblock %}
   </nav>
 
   <main>
     {% block main %}
-    Conteúdo principal
+      Conteúdo principal
     {% endblock %}
   </main>
 
   {% block footer %}
-  Rodapé
+    <!-- Inclui o componente da pasta componentes -->
+    {% include 'componentes/rodape.html' %}
   {% endblock %}
 
 {% endblock %}

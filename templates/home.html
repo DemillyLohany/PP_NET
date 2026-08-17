@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <!-- botão de login -->
+    <div align="right">
+        <a href="#" id="suap-btn-login">
+            <button type="button">Login &rarr;</button>
+        </a>
+    </div>
+
+    <section align="center">
+        <h1>Boas Vindas ao N.E.T.</h1>
+        <h2>Entre agora na jornada da programação!</h2>
+    </section>
+
+    <br>
+
+    <!-- cards informativos -->
+    <table border="1" width="100%" cellpadding="15">
+        <tr valign="top">
+            
+            <td width="50%" align="center">
+                <h3>Junte-se a nós!</h3>
+                <p>
+                    Aqui você poderá usufruir de materiais de outros estudantes 
+                    que te farão entrar na jornada da programação!
+                </p>
+                <br>
+                <a href="#" id="suap-btn-cadastro">
+                    <button type="button">Cadastre-se</button>
+                </a>
+            </td>
+
+            <td width="50%" align="center">
+                <h3>Dúvidas sobre o curso?</h3>
+                <p>
+                    Temos respostas para diversas perguntas sobre o site, 
+                    se quiser consultá-las, estarão dispostas a você!
+                </p>
+                <br>
+                <a href="#">
+                    <button type="button">Pergunte aqui!</button>
+                </a>
+            </td>
+
+        </tr>
+    </table>
+
+    <br><br>
+
+    <section align="center">
+        <table border="1" width="80%" cellpadding="40" align="center">
+            <tr>
+                <td align="center">
+                    <big><big><big>&#9654;</big></big></big>
+                    <p>[ Vídeo / Player ]</p>
+                </td>
+            </tr>
+        </table>
+    </section>
+{% endblock %}
+
+<!-- para integrar com o SUAP -->
+{% block scripts %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="{{ url_for('static', filename='js.cookie.js') }}"></script>
+  <script src="{{ url_for('static', filename='settings.js') }}"></script>
+  <script src="{{ url_for('static', filename='client.js') }}"></script>
+  <script>
+    var clienteSuap = new SuapClient(SUAP_URL, CLIENT_ID, HOME_URI, REDIRECT_URI, SCOPE);
+    clienteSuap.init();
+    $(document).ready(function () {
+        var urlLogin = clienteSuap.getLoginURL();
+        $("#suap-btn-login").attr('href', urlLogin);
+        $("#suap-btn-cadastro").attr('href', urlLogin);
+    });
+  </script>
+{% endblock %}

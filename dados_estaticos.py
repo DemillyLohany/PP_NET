@@ -65,6 +65,35 @@ USUARIO_LOGADO = {
     ]
 }
 
+NOTIFICACOES = {
+    "titulo_notificacao": "NOTIFICAÇÕES",
+    "autor_alteracao": "Pessoa X",
+    "acao": "alterou um conteúdo",
+    "conteudo_principal": {
+        "titulo": "Introdução a Laços de Repetição em Python",
+        "autor": "proffulano",
+        "data_criacao": "04/04/2026",
+        "ultima_atualizacao": "há 1 semana",
+        "subtitulo": "Texto sobre o assunto",
+        "texto": "Lorem hotnal, preguiça de inventar modinha ;-;\nLorem ipsum dolor sit amet, consectetur adipiscing elit..."
+    },
+    "blocos_anexos": [
+        {
+            "id": 1,
+            "tipo": "video",
+            "status": "excluido",
+            "titulo": "YouTube - Laços de Repetição em 10min",
+            "link": "youtube.com/video/balblablalalba"
+        },
+        {
+            "id": 2,
+            "tipo": "quiz",
+            "status": "criado",
+            "titulo": "Quiz - Teste seu conhecimento",
+            "link": "youtube.com/video/balblablalalba"
+        }
+    ]
+}
 
 #funções auxiliares para buscar dados rapidamente
 
