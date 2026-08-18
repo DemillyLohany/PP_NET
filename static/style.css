@@ -1,6 +1,8 @@
 body {
     font-family: sans-serif;
     margin: 20px;
+    background-color: #345d89;
+    
 }
 
 /* criar a linha do menu no topo */
@@ -40,3 +42,49 @@ button {
     padding: 5px 10px;
     cursor: pointer;
 }
+
+
+td.home {
+    background-color: salmon;
+    height: 50vh;
+    width: 25px;
+}
+
+td.home h3 {
+    color:white
+}
+td.home p{
+    color: navy;
+}
+
+td.home button{
+    color: white;
+    background-color: black;
+    
+}
+
+section h1,h2{
+    color: salmon;
+}
+
+.login{
+    background-color: black;
+    color: white;
+}
+
+
+.video td{
+    background-color: #ccc;
+    height: 50vh;
+    border-color: salmon;
+
+}
+
+.video td p{
+    color: salmon;
+}
+
+.perfil{
+    color: salmon;
+}
+

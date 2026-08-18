@@ -4,6 +4,7 @@ from materiais import materiais_bp
 from disciplinas import disciplinas_bp
 from perfil import perfil_bp
 from notificacoes import notificacoes_bp
+from database import engine
 
 app = Flask(__name__)
 app.secret_key = 'super-secret-key'
