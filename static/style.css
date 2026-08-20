@@ -67,7 +67,7 @@ section h1,h2{
     color: salmon;
 }
 
-.login{
+button.home{
     background-color: black;
     color: white;
 }
@@ -84,7 +84,14 @@ section h1,h2{
     color: salmon;
 }
 
-.perfil{
+h2.perfil{
     color: salmon;
 }
 
+div.perfil{
+    background-color: salmon;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
