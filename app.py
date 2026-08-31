@@ -29,5 +29,7 @@ def tela_login():
 def dashboard():
     return render_template('dashboard.html')
 
+print(app.url_map)
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

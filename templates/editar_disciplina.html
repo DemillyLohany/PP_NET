@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<hr>
+<h1>Editar Disciplina</h1>
+<hr>
+
+<form action="{{ url_for('disciplinas.editar_disciplina', disciplina_id=disciplina.id) }}" method="POST">
+
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" value="{{ disciplina.nome }}" required>
+
+    <label for="descricao">Descrição:</label>
+    <input type="text" id="descricao" name="descricao" value="{{ disciplina.descricao }}" required>
+
+    <button type="submit">Editar</button>
+
+</form>
+</form>
+
+<hr>
+
+<form action="{{ url_for('disciplinas.excluir_disciplina', disciplina_id=disciplina.id) }}" method="POST">
+
+    <button type="submit">Excluir disciplina</button>
+
+</form>
+<hr>
+
+
+{% endblock %}

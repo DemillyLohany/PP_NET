@@ -4,11 +4,18 @@
 <hr>
 <h1>Disciplinas</h1>
 <hr>
+<button>
+    <a href="{{url_for('disciplinas.criar')}}"> Criar Disciplina +</a>
+</button>
+
 {% for d in lista_disciplinas %}
 <div>
     <h2>{{ d.nome }}</h2>
     <p>{{ d.descricao }}</p>
-    <a href="{{ url_for('conteudos.conteudo', disciplina_id=d.id) }}">Acessar Conteúdos</a>
+    <a href="{{ url_for('conteudos.conteudo', disciplina_id=d.id) }}">Acessar Conteúdos</a> 
+    <button>
+        <a href="{{url_for('disciplinas.editar_disciplina', disciplina_id=d.id)}}"> ✎ </a>
+    </button>
 </div>
 {% endfor %}
 
