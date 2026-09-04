@@ -37,8 +37,8 @@
             <h2>Material - {{ m.titulo }}</h2>
             <a href="{{ m.url }}" target="_blank">{{ m.url }}</a>
         </div>
-        <form action="{{ url_for('materiais.excluir_material', conteudo_id=conteudo.id, index=loop.index0) }}" method="POST">
-            <button type="submit">[Excluir Material]</button>
+        <form action="{{ url_for('materiais.excluir_material', material_id=m.id) }}" method="POST">
+            <button type="submit">Excluir material</button>
         </form>
     </div>
     {% else %}

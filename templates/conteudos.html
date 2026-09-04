@@ -1,36 +1,71 @@
 {% extends 'base.html' %}
 
+{% block title %}
+  Conteúdos — N.E.T.
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/disciplinas.css') }}">
+{% endblock %}
+
 {% block main %}
-<hr>
-
-<h2>Disciplina: {{ disciplina.nome }}</h2>
-
-<hr>
-
-<div>
-    <h3>[Modo Edição] Criar Novo Conteúdo</h3>
-    <form action="" method="POST">
-        <p>
-            <input type="text" name="titulo_conteudo" placeholder="Título do Conteúdo (Ex: Laços de Repetição)" required>
-            <input type="text" name="descricao_conteudo" placeholder="Descrição do Conteúdo">
-        </p>
-        <button type="submit">Salvar Conteúdo</button>
-    </form>
-</div>
-
-{% for c in conteudos %}
-<div>
-    <h2>
-        <a href="{{ url_for('materiais.ver_materiais', conteudo_id=c.id) }}">
-            {{ c.titulo }}
-        </a>
-    </h2>
-    <p>{{ c.descricao }}</p>
-    <button type="button">[Excluir Conteúdo]</button>
+<section class="pagina-disciplinas">
+  <div class="container">
+    <div class="caminho-pagina">
+      <a href="{{ url_for('disciplinas.disciplinas') }}">Disciplinas</a>
+      <span>›</span>
+      <strong>{{ disciplina.nome }}</strong>
     </div>
-</div>
-{% else %}
-<p>Nenhum conteúdo cadastrado para esta disciplina ainda.</p>
-{% endfor %}
 
+    <div class="cabecalho-pagina">
+      <span class="etiqueta">materiais da disciplina</span>
+      <h1>Conteúdos<br><em>para avançar.</em></h1>
+      <p>Escolha um conteúdo para acessar os materiais organizados desta disciplina.</p>
+    </div>
+
+    {% if erro %}
+      <p class="mensagem-erro">{{ erro }}</p>
+    {% endif %}
+
+    <div class="formulario-conteudo">
+      <h2>Criar conteúdo</h2>
+      <form method="POST" action="{{ url_for('conteudos.conteudo', disciplina_id=disciplina.id) }}">
+        <label>
+          Título do conteúdo
+          <input name="titulo_conteudo" required placeholder="Ex.: Introdução ao Flask">
+        </label>
+        <label>
+          Descrição
+          <textarea name="descricao_conteudo" placeholder="Digite uma breve descrição"></textarea>
+        </label>
+        <button class="botao-criar" type="submit">Salvar conteúdo</button>
+      </form>
+    </div>
+
+    <div class="lista-disciplinas">
+      {% for c in conteudos %}
+      <article class="card-disciplina">
+        <div class="topo-card">
+          <span class="numero-disciplina">{{ "%02d"|format(loop.index) }}</span>
+          <span class="etiqueta">conteúdo</span>
+        </div>
+        <h2>
+          <a href="{{ url_for('materiais.ver_materiais', conteudo_id=c.id) }}">
+            {{ c.titulo }}
+          </a>
+        </h2>
+        <p>{{ c.descricao or 'Sem descrição cadastrada.' }}</p>
+        <div class="rodape-card">
+          <span>Materiais de estudo</span>
+          <form method="POST" action="{{ url_for('conteudos.excluir_conteudo', conteudo_id=c.id) }}">
+            <button class="botao-excluir" type="submit">Excluir</button>
+          </form>
+        </div>
+      </article>
+      {% else %}
+        <p>Nenhum conteúdo cadastrado para esta disciplina ainda.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
 {% endblock %}

@@ -1,0 +1,390 @@
+:root {
+  --fundo: #f6f3ee;
+  --branco: #fffdf9;
+  --azul: #242750;
+  --cinza: #6e7080;
+  --laranja: #ed7d52;
+  --laranja-escuro: #d75f38;
+  --lilas: #b9b1f6;
+  --azul-claro: #6eb5cd;
+  --linha: #dfddd8;
+}
+
+/* Área principal */
+
+.pagina-notificacoes {
+  min-height: 650px;
+  padding: 30px 0 80px;
+  background-color: var(--fundo);
+  background-image:
+    radial-gradient(
+      rgba(139, 114, 231, .1) .8px,
+      transparent .8px
+    );
+  background-size: 10px 10px;
+}
+
+/* Caminho da página */
+
+.caminho-pagina {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #99959e;
+  font: 10px monospace;
+}
+
+.caminho-pagina a:hover {
+  color: var(--azul);
+}
+
+.caminho-pagina strong {
+  color: var(--azul);
+}
+
+/* Título */
+
+.cabecalho-pagina {
+  padding: 52px 0 30px;
+}
+
+.etiqueta {
+  color: var(--laranja-escuro);
+  font: 10px monospace;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.cabecalho-pagina h1 {
+  max-width: 720px;
+  margin: 15px 0 12px;
+  color: var(--azul);
+  font-size: clamp(42px, 6vw, 72px);
+  line-height: .96;
+  letter-spacing: -4px;
+}
+
+.cabecalho-pagina p {
+  max-width: 520px;
+  margin: 0;
+  color: var(--cinza);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* Card principal da notificação */
+
+.card-notificacao {
+  max-width: 900px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--laranja);
+  box-shadow: 0 14px 30px rgba(36, 39, 80, .12);
+  transition: background .2s ease;
+}
+
+.card-notificacao.status-aprovada {
+  background: #6e9fb5;
+}
+
+.card-notificacao.status-reprovada {
+  background: #8b72a7;
+}
+
+/* Cabeçalho colorido */
+
+.cabecalho-notificacao {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 25px;
+  color: white;
+}
+
+.etiqueta-clara {
+  color: rgba(255, 255, 255, .8);
+}
+
+.cabecalho-notificacao h2 {
+  margin: 10px 0 0;
+  color: white;
+  font-size: 22px;
+  line-height: 1.15;
+}
+
+.status-notificacao {
+  white-space: nowrap;
+  color: white;
+  font: 10px monospace;
+  text-transform: uppercase;
+}
+
+/* Corpo do card */
+
+.corpo-notificacao {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 150px;
+  gap: 15px;
+  padding: 0 14px 14px;
+}
+
+/* Conteúdo da alteração */
+
+.visualizacao-notificacao {
+  min-width: 0;
+  border-radius: 8px;
+  padding: 20px;
+  background: var(--branco);
+}
+
+.visualizacao-notificacao h3 {
+  margin: 10px 0 7px;
+  color: var(--azul);
+  font-size: 20px;
+  line-height: 1.1;
+}
+
+.visualizacao-notificacao h4 {
+  margin: 18px 0 7px;
+  color: var(--azul);
+  font-size: 13px;
+}
+
+.informacao-conteudo {
+  margin: 0;
+  color: #aaa6ad;
+  font: 9px monospace;
+  line-height: 1.5;
+}
+
+.informacao-conteudo strong {
+  color: var(--cinza);
+}
+
+.texto-conteudo {
+  margin: 0;
+  color: var(--cinza);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* Lista de anexos */
+
+.lista-anexos {
+  display: grid;
+  gap: 8px;
+  margin-top: 20px;
+  border-top: 1px solid #eeeae4;
+  padding-top: 13px;
+}
+
+.anexo {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  border-radius: 4px;
+  padding: 8px 9px;
+  background: #f7f4ef;
+}
+
+.icone-anexo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  color: white;
+  background: var(--laranja);
+  font-size: 12px;
+}
+
+.anexo:nth-child(2) .icone-anexo {
+  color: var(--azul);
+  background: #d9cff9;
+}
+
+.informacoes-anexo {
+  min-width: 0;
+}
+
+.informacoes-anexo strong,
+.informacoes-anexo a,
+.informacoes-anexo small {
+  display: block;
+}
+
+.informacoes-anexo strong {
+  overflow: hidden;
+  color: var(--azul);
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.informacoes-anexo a {
+  overflow: hidden;
+  margin-top: 3px;
+  color: var(--laranja-escuro);
+  font-size: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.informacoes-anexo a:hover {
+  text-decoration: underline;
+}
+
+.informacoes-anexo small {
+  margin-top: 3px;
+  color: #96929a;
+  font-size: 9px;
+}
+
+.seta-anexo {
+  color: var(--laranja);
+  font-size: 16px;
+}
+
+/* Botões de avaliação */
+
+.acoes-notificacao {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 9px;
+}
+
+.titulo-acoes {
+  margin: 0 0 2px;
+  color: rgba(255, 255, 255, .85);
+  font: 10px monospace;
+  text-transform: uppercase;
+}
+
+.acoes-notificacao form {
+  display: grid;
+  gap: 9px;
+}
+
+.acoes-notificacao button {
+  width: 100%;
+  border: 0;
+  border-radius: 3px;
+  padding: 10px 8px;
+  color: white;
+  background: var(--azul);
+  font-size: 10px;
+  font-weight: 700;
+  transition: filter .2s ease, opacity .2s ease;
+}
+
+.acoes-notificacao button:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.acoes-notificacao button:disabled {
+  cursor: not-allowed;
+  opacity: .6;
+}
+
+.acoes-notificacao button:nth-child(2) {
+  background: #8b72a7;
+}
+
+.acoes-notificacao .botao-destacar {
+  background: var(--azul-claro);
+}
+
+/* Mensagem inferior */
+
+.mensagem-final {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 900px;
+  min-height: 100px;
+  color: var(--cinza);
+  font-size: 12px;
+}
+
+.mensagem-final i {
+  color: var(--lilas);
+  font-size: 20px;
+}
+
+/* Responsividade */
+
+@media (max-width: 800px) {
+  .corpo-notificacao {
+    grid-template-columns: 1fr;
+  }
+
+  .acoes-notificacao {
+    display: block;
+    padding: 4px 0 6px;
+  }
+
+  .titulo-acoes {
+    margin: 5px 0 10px;
+  }
+
+  .acoes-notificacao form {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .acoes-notificacao button {
+    min-height: 38px;
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 600px) {
+  .pagina-notificacoes {
+    padding-top: 22px;
+  }
+
+  .cabecalho-pagina {
+    padding: 42px 0 25px;
+  }
+
+  .cabecalho-pagina h1 {
+    font-size: 48px;
+    letter-spacing: -2px;
+  }
+
+  .cabecalho-notificacao {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+    padding: 19px;
+  }
+
+  .corpo-notificacao {
+    padding: 0 9px 9px;
+  }
+
+  .visualizacao-notificacao {
+    padding: 16px;
+  }
+
+  .acoes-notificacao form {
+    grid-template-columns: 1fr;
+  }
+
+  .anexo {
+    grid-template-columns: 30px minmax(0, 1fr);
+  }
+
+  .seta-anexo {
+    display: none;
+  }
+
+  .mensagem-final {
+    align-items: flex-start;
+    padding: 22px 0;
+  }
+}

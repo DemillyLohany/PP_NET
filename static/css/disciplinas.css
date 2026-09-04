@@ -1,0 +1,230 @@
+.pagina-disciplinas {
+  min-height: 650px;
+  padding: 30px 0 80px;
+  background-color: var(--fundo, #f6f3ee);
+  background-image:
+    radial-gradient(
+      rgba(139, 114, 231, .1) .8px,
+      transparent .8px
+    );
+  background-size: 10px 10px;
+}
+
+.caminho-pagina {
+  display: flex;
+  gap: 9px;
+  color: #99959e;
+  font: 10px monospace;
+}
+
+.caminho-pagina strong {
+  color: var(--azul, #242750);
+}
+
+.cabecalho-pagina {
+  padding: 54px 0 26px;
+}
+
+.etiqueta {
+  color: #d75f38;
+  font: 10px monospace;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.cabecalho-pagina h1 {
+  max-width: 620px;
+  margin: 15px 0 12px;
+  color: var(--azul, #242750);
+  font-size: clamp(42px, 6vw, 72px);
+  line-height: .96;
+  letter-spacing: -4px;
+}
+
+.cabecalho-pagina h1 em {
+  color: var(--laranja, #ed7d52);
+  font-style: normal;
+}
+
+.cabecalho-pagina p {
+  max-width: 490px;
+  margin: 0;
+  color: var(--cinza, #6e7080);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.acoes-pagina {
+  display: flex;
+  justify-content: flex-start;
+  margin: 8px 0 25px;
+}
+
+.botao-criar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 4px;
+  padding: 11px 16px;
+  color: white;
+  background: var(--azul, #242750);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.botao-criar:hover {
+  background: #30346a;
+}
+
+.lista-disciplinas {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 32px;
+}
+
+.card-disciplina {
+  position: relative;
+  overflow: hidden;
+  min-height: 220px;
+  border: 1px solid var(--linha, #dfddd8);
+  border-radius: 7px;
+  padding: 23px;
+  background: var(--branco, #fffdf9);
+  box-shadow: 0 10px 22px rgba(36, 39, 80, .08);
+}
+
+.card-disciplina::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 5px;
+  background: var(--cor-card);
+  content: "";
+}
+
+.card-disciplina:nth-child(3n + 1) {
+  --cor-card: var(--laranja, #ed7d52);
+}
+
+.card-disciplina:nth-child(3n + 2) {
+  --cor-card: var(--lilas, #b9b1f6);
+}
+
+.card-disciplina:nth-child(3n) {
+  --cor-card: #6eb5cd;
+}
+
+.topo-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.numero-disciplina {
+  color: var(--cor-card);
+  font: 10px monospace;
+}
+
+.botao-editar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 4px;
+  padding: 7px 9px;
+  color: var(--cor-card);
+  background: #eee9ff;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.botao-editar:hover {
+  filter: brightness(.96);
+}
+
+.card-disciplina h2 {
+  margin: 28px 0 9px;
+  color: var(--azul, #242750);
+  font-size: 20px;
+}
+
+.card-disciplina p {
+  min-height: 35px;
+  margin: 0;
+  color: var(--cinza, #6e7080);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.rodape-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 22px;
+  border-top: 1px solid #eeeae4;
+  padding-top: 13px;
+  color: #9c99a0;
+  font: 9px monospace;
+}
+
+.botao-acessar {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border-radius: 3px;
+  padding: 9px 12px;
+  color: white;
+  background: var(--azul, #242750);
+  font: 700 10px Arial, sans-serif;
+}
+
+.botao-acessar:hover {
+  background: #30346a;
+}
+
+.formulario-excluir {
+  margin-top: 12px;
+}
+
+.formulario-excluir button {
+  border: 0;
+  color: #b85b48;
+  background: transparent;
+  font-size: 10px;
+}
+
+.formulario-excluir button:hover {
+  text-decoration: underline;
+}
+
+.sem-disciplinas {
+  grid-column: 1 / -1;
+  border: 1px dashed var(--linha, #dfddd8);
+  border-radius: 7px;
+  padding: 35px;
+  color: var(--cinza, #6e7080);
+  text-align: center;
+}
+
+.sem-disciplinas a {
+  color: var(--laranja, #ed7d52);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .lista-disciplinas {
+    grid-template-columns: 1fr;
+  }
+
+  .cabecalho-pagina h1 {
+    font-size: 48px;
+    letter-spacing: -2px;
+  }
+
+  .rodape-card {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+}

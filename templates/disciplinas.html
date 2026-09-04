@@ -1,22 +1,140 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% block title %}
+  Disciplinas — N.E.T.
+{% endblock %}
+
+{% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/disciplinas.css') }}"
+>
+{% endblock %}
 
 {% block main %}
-<hr>
-<h1>Disciplinas</h1>
-<hr>
-<button>
-    <a href="{{url_for('disciplinas.criar')}}"> Criar Disciplina +</a>
-</button>
+<section class="pagina-disciplinas">
+  <div class="container">
 
-{% for d in lista_disciplinas %}
-<div>
-    <h2>{{ d.nome }}</h2>
-    <p>{{ d.descricao }}</p>
-    <a href="{{ url_for('conteudos.conteudo', disciplina_id=d.id) }}">Acessar Conteúdos</a> 
-    <button>
-        <a href="{{url_for('disciplinas.editar_disciplina', disciplina_id=d.id)}}"> ✎ </a>
-    </button>
-</div>
-{% endfor %}
+    <div class="caminho-pagina">
+      <a href="{{ url_for('home') }}">
+        Início
+      </a>
 
+      <span>›</span>
+
+      <strong>
+        Disciplinas
+      </strong>
+    </div>
+
+    <div class="cabecalho-pagina">
+      <span class="etiqueta">
+        Organize seu percurso
+      </span>
+
+      <h1>
+        Suas disciplinas<br>
+        <em>em um só lugar.</em>
+      </h1>
+
+      <p>
+        Crie espaços para reunir materiais e descobertas
+        de cada etapa da sua jornada.
+      </p>
+    </div>
+
+    <div class="acoes-pagina">
+      <a
+        class="botao-criar"
+        href="{{ url_for('disciplinas.criar') }}"
+      >
+        <i class="fa-solid fa-plus"></i>
+        Criar disciplina
+      </a>
+    </div>
+
+    <div class="lista-disciplinas">
+      {% for disciplina in lista_disciplinas %}
+      <article class="card-disciplina">
+
+        <div class="topo-card">
+          <span class="numero-disciplina">
+            {{ "%02d"|format(loop.index) }}
+          </span>
+
+          <a
+            class="botao-editar"
+            href="{{ url_for(
+              'disciplinas.editar_disciplina',
+              disciplina_id=disciplina.id
+            ) }}"
+          >
+            <i class="fa-solid fa-pen"></i>
+            Editar
+          </a>
+        </div>
+
+        <h2>
+          {{ disciplina.nome }}
+        </h2>
+
+        <p>
+          {{ disciplina.descricao }}
+        </p>
+
+        <div class="rodape-card">
+          <span>
+            Materiais de estudo
+          </span>
+
+          <a
+            class="botao-acessar"
+            href="{{ url_for(
+              'conteudos.conteudo',
+              disciplina_id=disciplina.id
+            ) }}"
+          >
+            Acessar
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+        </div>
+
+        <form
+          class="formulario-excluir"
+          action="{{ url_for(
+            'disciplinas.excluir_disciplina',
+            disciplina_id=disciplina.id
+          ) }}"
+          method="POST"
+        >
+          <button type="submit">
+            <i class="fa-solid fa-trash"></i>
+            Excluir
+          </button>
+        </form>
+
+      </article>
+      {% else %}
+      <div class="sem-disciplinas">
+        <p>
+          Nenhuma disciplina encontrada.
+        </p>
+
+        {% if termo %}
+        <a href="{{ url_for('disciplinas.disciplinas') }}">
+          Limpar pesquisa
+        </a>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script
+  src="{{ url_for('static', filename='js/disciplinas.js') }}"
+></script>
 {% endblock %}

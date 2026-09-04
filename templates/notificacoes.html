@@ -1,96 +1,232 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% block title %}
+  Notificações — N.E.T.
+{% endblock %}
+
+{% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/notificacoes.css') }}"
+>
+{% endblock %}
 
 {% block main %}
 
-    <h1 align="center">{{ dados.titulo_notificacao }}</h1>
+{% set avaliacao_concluida = dados.status_avaliacao in [
+  'Aprovada',
+  'Reprovada'
+] %}
 
-    <table border="1" width="100%" cellpadding="15">
-        <tr>
-            <td>
-                <h2>{{ dados.autor_alteracao }} {{ dados.acao }}</h2>
+<section class="pagina-notificacoes">
+  <div class="container">
 
-                <table border="0" width="100%" cellpadding="10">
-                    <tr valign="top">
-                        
-                        <!-- coluna da esquerda -->
-                        <td width="75%">
-                            
-                            <!-- bloco 1: texto editado -->
-                            <table border="1" width="100%" cellpadding="10">
-                                <tr>
-                                    <td>
-                                        <h3>{{ dados.conteudo_principal.titulo }}</h3>
-                                        <p>
-                                            <small>
-                                                Criado por <strong>{{ dados.conteudo_principal.autor }}</strong> 
-                                                em {{ dados.conteudo_principal.data_criacao }}. 
-                                                Última atualização {{ dados.conteudo_principal.ultima_atualizacao }}.
-                                            </small>
-                                        </p>
-                                        <h4>{{ dados.conteudo_principal.subtitulo }}</h4>
-                                        <p>{{ dados.conteudo_principal.texto }}</p>
-                                    </td>
-                                </tr>
-                            </table>
+    <div class="caminho-pagina">
+      <a href="{{ url_for('home') }}">
+        Início
+      </a>
 
-                            <br>
+      <span>›</span>
 
-                            <!-- bloco 2: anexos (ex.: vídeo) -->
-                            {% for bloco in dados.blocos_anexos %}
-                                <table border="1" width="100%" cellpadding="10">
-                                    <tr>
-                                        <td width="10%" align="center">
-                                            {% if bloco.tipo == 'video' %}
-                                                <big>▶</big>
-                                            {% elif bloco.tipo == 'quiz' %}
-                                                <big>?</big>
-                                            {% endif %}
-                                        </td>
-                                        
-                                        <!-- informações -->
-                                        <td>
-                                            <strong>{{ bloco.titulo }}</strong><br>
-                                            <a href="https://{{ bloco.link }}" target="_blank">{{ bloco.link }}</a><br>
-                                            <small>Status: <strong>{{ bloco.status }}</strong></small>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <br>
-                            {% endfor %}
+      <strong>
+        Notificações
+      </strong>
+    </div>
 
-                        </td>
+    <div class="cabecalho-pagina">
+      <span class="etiqueta">
+        acompanhe a comunidade
+      </span>
 
-                        <!-- coluna da direita -->
-                        <td width="25%" align="center">
-                            <form action="#" method="POST">
-                                
-                                <p>
-                                    <button type="submit" name="acao" value="aprovar">
-                                        Aprovar ✔
-                                    </button>
-                                </p>
+      <h1>
+        {{ dados.titulo_notificacao }}
+      </h1>
 
-                                <p>
-                                    <button type="submit" name="acao" value="reprovar">
-                                        Reprovar ✖
-                                    </button>
-                                </p>
+      <p>
+        Veja as alterações e contribuições que precisam
+        da sua atenção.
+      </p>
+    </div>
 
-                                <br><br>
+    <article
+      class="
+        card-notificacao
+        {% if dados.status_avaliacao == 'Aprovada' %}
+          status-aprovada
+        {% elif dados.status_avaliacao == 'Reprovada' %}
+          status-reprovada
+        {% endif %}
+      "
+    >
 
-                                <p>
-                                    <button type="button" name="acao" value="destacar">
-                                        Destacar<br>Alterações 👁
-                                    </button>
-                                </p>
+      <div class="cabecalho-notificacao">
+        <div>
+          <span class="etiqueta etiqueta-clara">
+            nova contribuição
+          </span>
 
-                            </form>
-                        </td>
+          <h2>
+            {{ dados.autor_alteracao }}
+            {{ dados.acao }}
+          </h2>
+        </div>
 
-                    </tr>
-                </table>
+        <span class="status-notificacao">
+          {{ dados.status_avaliacao }}
+        </span>
+      </div>
 
-            </td>
-        </tr>
-    </table>
+      <div class="corpo-notificacao">
+
+        <div class="visualizacao-notificacao">
+          <span class="etiqueta">
+            conteúdo atualizado
+          </span>
+
+          <h3>
+            {{ dados.conteudo_principal.titulo }}
+          </h3>
+
+          <p class="informacao-conteudo">
+            Criado por
+            <strong>
+              {{ dados.conteudo_principal.autor }}
+            </strong>
+
+            em
+            {{ dados.conteudo_principal.data_criacao }}.
+
+            Última atualização:
+            {{ dados.conteudo_principal.ultima_atualizacao }}.
+          </p>
+
+          <h4>
+            {{ dados.conteudo_principal.subtitulo }}
+          </h4>
+
+          <p class="texto-conteudo">
+            {{ dados.conteudo_principal.texto }}
+          </p>
+
+          <div class="lista-anexos">
+            {% for bloco in dados.blocos_anexos %}
+            <div class="anexo">
+
+              <div class="icone-anexo">
+                {% if bloco.tipo == "video" %}
+                  <i class="fa-solid fa-play"></i>
+                {% elif bloco.tipo == "quiz" %}
+                  <i class="fa-solid fa-question"></i>
+                {% else %}
+                  <i class="fa-solid fa-link"></i>
+                {% endif %}
+              </div>
+
+              <div class="informacoes-anexo">
+                <strong>
+                  {{ bloco.titulo }}
+                </strong>
+
+                <a
+                  href="https://{{ bloco.link }}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {{ bloco.link }}
+                </a>
+
+                <small>
+                  Status:
+                  <strong>
+                    {{ bloco.status }}
+                  </strong>
+                </small>
+              </div>
+
+              <span class="seta-anexo">
+                ↗
+              </span>
+
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <aside class="acoes-notificacao">
+
+          <p class="titulo-acoes">
+            Avaliar alteração
+          </p>
+
+          <form
+            action="{{ url_for('notificacoes.tela_notificacoes') }}"
+            method="POST"
+          >
+
+            <button
+              type="submit"
+              name="acao"
+              value="aprovar"
+              {% if avaliacao_concluida %}
+                disabled
+              {% endif %}
+            >
+              <i class="fa-solid fa-check"></i>
+              {% if dados.status_avaliacao == "Aprovada" %}
+                Aprovada
+              {% else %}
+                Aprovar
+              {% endif %}
+            </button>
+
+            <button
+              type="submit"
+              name="acao"
+              value="reprovar"
+              {% if avaliacao_concluida %}
+                disabled
+              {% endif %}
+            >
+              <i class="fa-solid fa-xmark"></i>
+              {% if dados.status_avaliacao == "Reprovada" %}
+                Reprovada
+              {% else %}
+                Reprovar
+              {% endif %}
+            </button>
+
+            <button
+              type="submit"
+              name="acao"
+              value="destacar"
+              class="botao-destacar"
+            >
+              <i class="fa-solid fa-eye"></i>
+
+              {% if dados.destacada %}
+                Alteração destacada
+              {% else %}
+                Destacar alteração
+              {% endif %}
+            </button>
+
+          </form>
+
+        </aside>
+
+      </div>
+
+    </article>
+
+    <div class="mensagem-final">
+      <i class="fa-solid fa-circle-info"></i>
+
+      <p>
+        As contribuições ajudam o acervo a continuar crescendo.
+      </p>
+    </div>
+
+  </div>
+</section>
+
 {% endblock %}

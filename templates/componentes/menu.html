@@ -1,39 +1,57 @@
-<!-- menu principal do site -->
-<nav class="navbar">
-    <table class="menu-table">
-        <tr>
-            <td class="col-logo">
-                <button type="button" class="btn-hamburger">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-                <div class="brand-logo">
-                    <span class="symbol">&lt;/</span>
-                    <span class="text">N.E.T.</span>
-                    <span class="symbol">&gt;</span>
-                </div>
-            </td>
+<header class="menu-principal">
+  <a class="logo" href="{{ url_for('home') }}">
+    <img
+      src="{{ url_for('static', filename='imagens/logo.png') }}"
+      alt="Logo N.E.T."
+    >
+  </a>
 
-            <!-- campo de busca -->
-            <td class="col-search">
-                <form action="#" method="GET" class="search-form">
-                    <div class="search-container">
-                        <button type="submit" class="btn-search">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
-                        <input type="text" class="search-input">
-                    </div>
-                </form>
-            </td>
+  <div class="menu-conteudo">
+    <form
+      class="pesquisa-menu"
+      action="{{ url_for('disciplinas.disciplinas') }}"
+      method="GET"
+    >
+      <label for="pesquisa-menu">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        Pesquisar
+      </label>
 
-            <!-- icones de navegacao -->
-            <td class="col-actions">
-                <a href="{{ url_for('notificacoes.tela_notificacoes') }}" class="action-link">
-                    <i class="fa-regular fa-bell icon-btn"></i>
-                </a>
-                <a href="{{ url_for('perfil.exibir_perfil') }}" class="action-link">
-                    <i class="fa-solid fa-user icon-btn"></i>
-                </a>
-            </td>
-        </tr>
-    </table>
-</nav>
+      <input
+        id="pesquisa-menu"
+        name="q"
+        type="search"
+        value="{{ request.args.get('q', '') }}"
+        placeholder="Digite aqui..."
+      >
+    </form>
+
+        <a href="{{ url_for('home') }}">
+        Início
+        </a>
+
+        <a
+        href="{{ url_for('disciplinas.disciplinas') }}"
+        >
+        Disciplinas
+        </a>
+
+        <a
+        href="{{ url_for('conteudos.conteudos') }}"
+        >
+        Conteúdos
+        </a>
+
+        <a
+        href="{{ url_for('notificacoes.tela_notificacoes') }}"
+        >
+        Notificações
+        </a>
+
+        <a
+        href="{{ url_for('perfil.exibir_perfil') }}"
+        >
+        Perfil
+        </a>
+  </div>
+</header>

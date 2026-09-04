@@ -1,37 +1,38 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!doctype html>
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>N.E.T.</title>
-  <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
-  <link href="{{ url_for('static', filename='css/menu.css') }}" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>
+    {% block title %}
+      N.E.T.
+    {% endblock %}
+  </title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/rodape.css') }}">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   {% block head %}
   {% endblock %}
 </head>
 
 <body>
-{% block body %}
   <nav>
-    {% block nav %}
-      <!-- Inclui o componente da pasta componentes -->
-      {% include 'componentes/menu.html' %}
-    {% endblock %}
+    {% include 'componentes/menu.html' %}
   </nav>
 
   <main>
     {% block main %}
-      Conteúdo principal
     {% endblock %}
   </main>
 
-  {% block footer %}
-    <!-- Inclui o componente da pasta componentes -->
-    {% include 'componentes/rodape.html' %}
-  {% endblock %}
-
-{% endblock %}
+  {% include 'componentes/rodape.html' %}
 
   {% block scripts %}
   {% endblock %}
