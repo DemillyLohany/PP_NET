@@ -1,57 +1,29 @@
 <header class="menu-principal">
-  <a class="logo" href="{{ url_for('home') }}">
-    <img
-      src="{{ url_for('static', filename='imagens/logo.png') }}"
-      alt="Logo N.E.T."
-    >
+  <a class="logo" href="{{ url_for('home') }}" aria-label="N.E.T. — Início">
+    <img src="{{ url_for('static', filename='imagens/logo_menu.png') }}" alt="N.E.T.">
   </a>
 
-  <div class="menu-conteudo">
-    <form
-      class="pesquisa-menu"
-      action="{{ url_for('disciplinas.disciplinas') }}"
-      method="GET"
+  <form
+    class="pesquisa-menu"
+    action="{{ url_for('disciplinas.disciplinas') }}"
+    method="get"
+    role="search"
+  >
+    <label class="texto-acessivel" for="pesquisa-menu">Pesquisar</label>
+    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+    <input
+      id="pesquisa-menu"
+      name="q"
+      type="search"
+      value="{{ request.args.get('q', '') }}"
+      placeholder="Procure o que precisa..."
     >
-      <label for="pesquisa-menu">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        Pesquisar
-      </label>
+  </form>
 
-      <input
-        id="pesquisa-menu"
-        name="q"
-        type="search"
-        value="{{ request.args.get('q', '') }}"
-        placeholder="Digite aqui..."
-      >
-    </form>
-
-        <a href="{{ url_for('home') }}">
-        Início
-        </a>
-
-        <a
-        href="{{ url_for('disciplinas.disciplinas') }}"
-        >
-        Disciplinas
-        </a>
-
-        <a
-        href="{{ url_for('conteudos.conteudos') }}"
-        >
-        Conteúdos
-        </a>
-
-        <a
-        href="{{ url_for('notificacoes.tela_notificacoes') }}"
-        >
-        Notificações
-        </a>
-
-        <a
-        href="{{ url_for('perfil.exibir_perfil') }}"
-        >
-        Perfil
-        </a>
-  </div>
+  <nav class="menu-conteudo" aria-label="Navegação principal">
+    <a class="{% if request.endpoint == 'home' %}ativo{% endif %}" href="{{ url_for('home') }}">Início</a>
+    <a class="{% if request.endpoint == 'disciplinas.disciplinas' %}ativo{% endif %}" href="{{ url_for('disciplinas.disciplinas') }}">Disciplinas</a>
+    <a class="{% if request.endpoint == 'notificacoes.tela_notificacoes' %}ativo{% endif %}" href="{{ url_for('notificacoes.tela_notificacoes') }}">Notificações</a>
+    <a class="{% if request.endpoint == 'perfil.exibir_perfil' %}ativo{% endif %}" href="{{ url_for('perfil.exibir_perfil') }}">Perfil</a>
+  </nav>
 </header>

@@ -1,60 +1,168 @@
 {% extends 'base.html' %}
 
+{% block title %}
+  Perfil — N.E.T.
+{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
+{% endblock %}
+
 {% block main %}
-<hr>
+  {% set nome_salvo = perfil_edicao.get('nome', '') %}
+  {% set email_salvo = perfil_edicao.get('email', '') %}
+  {% set vinculo_salvo = perfil_edicao.get('tipo_vinculo', '') %}
 
-<h2 class="perfil">Perfil do Usuário</h2>
+  <section class="pagina-perfil container">
+    <div class="perfil-cabecalho">
+      <span class="perfil-etiqueta">Seu espaço no N.E.T.</span>
+      <h1>Perfil</h1>
+      <p>Atualize suas informações para deixar sua experiência mais completa.</p>
+    </div>
 
-<div class="perfil">
-    <div>
-        <div onclick="alternarFormularioFoto()" title="Clique para alterar a foto" style="cursor: pointer;">
-            <img 
-                id="foto-perfil" 
-                src="{{ foto_atual if foto_atual else 'https://ui-avatars.com/api/?name=' ~ (usuario.nome if usuario else 'Usuario') }}" 
-                alt="Foto de Perfil" width="120" height="120">
+    <form class="cartao-perfil" action="{{ url_for('perfil.salvar_perfil') }}" method="post">
+      <div class="perfil-superior">
+        <img
+          class="avatar-perfil"
+          src="{{ url_for('static', filename='imagens/div_avatar.png') }}"
+          alt="Avatar do perfil"
+        >
+
+        <div class="perfil-campos-principais">
+          <label for="tipo-vinculo">Você é</label>
+          <select id="tipo-vinculo" name="tipo_vinculo" required>
+            {% if vinculo_salvo %}
+              <option value="{{ vinculo_salvo }}" selected>{{ vinculo_salvo }}</option>
+            {% else %}
+              <option value="" selected>Selecione seu vínculo</option>
+            {% endif %}
+            <option value="Admin / Estudante">Admin / Estudante</option>
+            <option value="Estudante">Estudante</option>
+            <option value="Professor(a)">Professor(a)</option>
+          </select>
+
+          <label for="nome">Nome completo</label>
+          <input
+            id="nome"
+            name="nome"
+            type="text"
+            value="{{ nome_salvo }}"
+            placeholder=""
+            required
+          >
+        </div>
+      </div>
+
+      <div class="perfil-campos-secundarios">
+        <div class="campo-perfil">
+          <label for="email">E-mail</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            value="{{ email_salvo }}"
+            placeholder=""
+            required
+          >
         </div>
 
-        <h3 id="usuario-nome">{{ usuario.nome if usuario else 'Carregando...' }}</h3>
-    </div>
+        <div class="campo-perfil">
+          <label for="senha">Senha</label>
+          <div class="campo-senha">
+            <input
+              id="senha"
+              type="password"
+              placeholder="••••••••"
+              autocomplete="new-password"
+            >
+            <button
+              class="botao-olho"
+              type="button"
+              onclick="alternarSenha()"
+              aria-label="Mostrar ou ocultar senha"
+            >
+              <i class="fa-solid fa-eye" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
 
-    <div id="form-foto" style="display: none;">
-        <h4>Alterar Link da Foto</h4>
-        <form action="{{ url_for('perfil.atualizar_foto') }}" method="POST">
-            <p>
-                <label for="foto_url">URL da Nova Foto:</label><br>
-                <input 
-                    type="url" 
-                    id="foto_url" 
-                    name="foto_url" 
-                    value="{{ foto_atual if foto_atual else '' }}" 
-                    placeholder="https://exemplo.com/minha-foto.jpg" 
-                    required
-                >
-            </p>
-            <button type="submit">Salvar</button>
-            <button type="button" onclick="alternarFormularioFoto()">Cancelar</button>
-        </form>
-    </div>
+      <div class="perfil-acoes">
+        <span id="status-perfil">Buscando dados do SUAP...</span>
+        <button class="botao-salvar" type="submit">Salvar alterações</button>
+      </div>
+    </form>
 
-    <hr>
+    <a id="link-login-suap" class="link-login-suap" href="#" hidden>
+      Entrar com o SUAP
+    </a>
+  </section>
+{% endblock %}
 
-    <div>
-        <h3>Informações do usuário</h3>
-        <p><strong>Matrícula:</strong> <span id="usuario-matricula">{{ usuario.matricula if usuario else '-' }}</span></p> 
-        <p><strong>Vínculo:</strong> <span id="usuario-vinculo">{{ usuario.tipo_vinculo if usuario else '-' }}</span></p>
-        <p><strong>E-mail:</strong> <span id="usuario-email">{{ usuario.email if usuario else '-' }}</span></p>
-    </div>
-</div>
+{% block scripts %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="{{ url_for('static', filename='js.cookie.js') }}"></script>
+  <script src="{{ url_for('static', filename='settings.js') }}"></script>
+  <script src="{{ url_for('static', filename='client.js') }}"></script>
 
-<script>
-    function alternarFormularioFoto() {
-        var form = document.getElementById("form-foto");
-        if (form.style.display === "none" || form.style.display === "") {
-            form.style.display = "block";
-        } else {
-            form.style.display = "none";
-        }
+  <script>
+    function alternarSenha() {
+      const campo = document.getElementById("senha");
+      campo.type = campo.type === "password" ? "text" : "password";
     }
-</script>
 
+    const clienteSuap = new SuapClient(
+      SUAP_URL,
+      CLIENT_ID,
+      HOME_URI,
+      REDIRECT_URI,
+      SCOPE
+    );
+
+    clienteSuap.init();
+
+    const nome = document.getElementById("nome");
+    const email = document.getElementById("email");
+    const vinculo = document.getElementById("tipo-vinculo");
+    const status = document.getElementById("status-perfil");
+    const linkLogin = document.getElementById("link-login-suap");
+
+    if (clienteSuap.isAuthenticated()) {
+      clienteSuap.getResource(
+        clienteSuap.getToken().getScope(),
+        function (dados) {
+          if (!nome.value) {
+            nome.value = dados.nome_usual || dados.nome || "";
+          }
+
+          if (!email.value) {
+            email.value = dados.email || "";
+          }
+
+          const tipoVinculo = dados.tipo_vinculo || dados.vinculo || "";
+
+          if (!vinculo.value && tipoVinculo) {
+            let opcao = Array.from(vinculo.options).find(function (item) {
+              return item.value === tipoVinculo;
+            });
+
+            if (!opcao) {
+              opcao = document.createElement("option");
+              opcao.value = tipoVinculo;
+              opcao.textContent = tipoVinculo;
+              vinculo.appendChild(opcao);
+            }
+
+            vinculo.value = tipoVinculo;
+          }
+
+          status.textContent = "Dados do SUAP carregados.";
+        }
+      );
+    } else {
+      status.textContent = "Entre com sua conta do SUAP para carregar seus dados.";
+      linkLogin.href = clienteSuap.getLoginURL();
+      linkLogin.hidden = false;
+    }
+  </script>
 {% endblock %}

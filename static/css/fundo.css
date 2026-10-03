@@ -1,0 +1,20 @@
+:root {
+  --fundo: #f6f3ee;
+  --branco: #fffdf9;
+  --azul: #242750;
+  --cinza: #6e7080;
+  --laranja: #ed7d52;
+  --laranja-escuro: #d75f38;
+  --lilas: #b9b1f6;
+  --azul-claro: #6eb5cd;
+  --linha: #dfddd8;
+}
+
+body {
+  background-color: var(--fundo);
+  background-image: radial-gradient(
+    rgba(139, 114, 231, .1) .8px,
+    transparent .8px
+  );
+  background-size: 10px 10px;
+}

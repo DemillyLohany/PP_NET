@@ -1,35 +1,18 @@
 <footer class="rodape">
   <div class="rodape-conteudo">
-    <a class="logo" href="{{ url_for('home') }}">
-      <img src="../static/imagens/logo.png" alt="">
+    <a class="logo" href="{{ url_for('home') }}" aria-label="N.E.T. — Início">
+      <img src="{{ url_for('static', filename='imagens/logo_rodape.png') }}" alt="N.E.T.">
     </a>
 
-    <p>
-      Para informática não ser solitária!
-    </p>
-
-    <div class="links-rodape">
-      <a href="{{ url_for('home') }}">
-        Início
-      </a>
-
-      <a href="{{ url_for('notificacoes.tela_notificacoes') }}">
-        Notificações
-      </a>
-
-      <a href="{{ url_for('perfil.exibir_perfil') }}">
-        Perfil
-      </a>
-    </div>
+    <nav class="links-rodape" aria-label="Links do rodapé">
+      <a href="{{ url_for('home') }}">Explorar</a>
+      <a href="{{ url_for('disciplinas.disciplinas') }}">Disciplinas</a>
+      <a href="{{ url_for('conteudos.conteudos') }}">Como funciona</a>
+      <a href="{{ url_for('home') }}">Sobre</a>
+    </nav>
   </div>
 
   <div class="rodape-final">
-    <span>
-      © 2026 N.E.T. · Projeto colaborativo
-    </span>
-
-    <span>
-      Feito com curiosidade ·
-    </span>
+    <span>© 2026 N.E.T. · projeto colaborativo</span>
   </div>
 </footer>

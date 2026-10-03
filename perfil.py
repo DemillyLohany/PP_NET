@@ -1,41 +1,21 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
-from sqlmodel import Session, select
-
-from database import engine
-from models import Usuario
-from dados_estaticos import buscar_usuario_logado
-
 
 perfil_bp = Blueprint("perfil", __name__)
 
-
 @perfil_bp.route("/perfil")
 def exibir_perfil():
-    with Session(engine) as db_session:
-        usuario = db_session.exec(select(Usuario)).first()
-
-    if usuario is None:
-        usuario = buscar_usuario_logado()
-
-    foto_atual = session.get(
-        "foto_customizada",
-        getattr(usuario, "foto_url", None)
-        if not isinstance(usuario, dict)
-        else usuario.get("foto_url")
-    )
-
+    perfil_edicao = session.get("perfil_edicao", {})
     return render_template(
         "perfil.html",
-        usuario=usuario,
-        foto_atual=foto_atual
+        perfil_edicao=perfil_edicao
     )
 
-
-@perfil_bp.route("/atualizar-foto", methods=["POST"])
-def atualizar_foto():
-    nova_url = request.form.get("foto_url", "").strip()
-
-    if nova_url:
-        session["foto_customizada"] = nova_url
+@perfil_bp.route("/salvar", methods=["POST"])
+def salvar_perfil():
+    session["perfil_edicao"] = {
+        "nome": request.form.get("nome", "").strip(),
+        "email": request.form.get("email", "").strip(),
+        "tipo_vinculo": request.form.get("tipo_vinculo", "").strip()
+    }
 
     return redirect(url_for("perfil.exibir_perfil"))

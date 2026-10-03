@@ -1,0 +1,38 @@
+.inicio-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 50px 0;
+  text-align: left;
+}
+
+.inicio-texto {
+  flex: 1 1 340px;
+}
+
+.inicio-texto h1 {
+  margin-bottom: 14px;
+  color: var(--azul);
+  font-size: clamp(38px, 5vw, 68px);
+  line-height: 1;
+}
+
+.inicio-texto h2 {
+  color: var(--laranja);
+  font-size: clamp(22px, 3vw, 36px);
+}
+
+.inicio-imagem {
+  flex: 1 1 340px;
+}
+
+.inicio-imagem img {
+  display: block;
+  width: 100%;
+  max-width: 620px;
+  height: auto;
+  margin-left: auto;
+  object-fit: contain;
+}

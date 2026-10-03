@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block main %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
     <!-- botão de login -->
     <div align="right">
         <a href="#" id="suap-btn-login">
@@ -8,56 +9,20 @@
         </a>
     </div>
 
-    <section align="center">
-        <h1>Boas Vindas ao N.E.T.</h1>
-        <h2>Entre agora na jornada da programação!</h2>
+    <section class="inicio-hero container">
+        <div class="inicio-texto">
+            <h1>Boas-vindas ao N.E.T.</h1>
+            <h2>Entre agora na jornada da programação!</h2>
+        </div>
+
+        <div class="inicio-imagem">
+            <img
+            src="{{ url_for('static', filename='imagens/img_home.png') }}"
+            alt="Estudante usando um notebook"
+            >
+        </div>
     </section>
 
-    <br>
-
-    <!-- cards informativos -->
-    <table border="1" width="100%" cellpadding="15">
-        <tr valign="top">
-            
-            <td class="home" width="50%" align="center">
-                <h3>Junte-se a nós!</h3>
-                <p>
-                    Aqui você poderá usufruir de materiais de outros estudantes 
-                    que te farão entrar na jornada da programação!
-                </p>
-                <br>
-                <a href="#" id="suap-btn-cadastro">
-                    <button type="button">Cadastre-se</button>
-                </a>
-            </td>
-
-            <td class="home" width="50%" align="center">
-                <h3>Dúvidas sobre o curso?</h3>
-                <p>
-                    Temos respostas para diversas perguntas sobre o site, 
-                    se quiser consultá-las, estarão dispostas a você!
-                </p>
-                <br>
-                <a href="#">
-                    <button type="button">Pergunte aqui!</button>
-                </a>
-            </td>
-
-        </tr>
-    </table>
-
-    <br><br>
-
-    <section class="video" align="center">
-        <table border="1" width="80%" cellpadding="40" align="center">
-            <tr>
-                <td align="center">
-                    <big><big><big>&#9654;</big></big></big>
-                    <p>[ Vídeo / Player ]</p>
-                </td>
-            </tr>
-        </table>
-    </section>
 {% endblock %}
 
 <!-- para integrar com o SUAP -->
