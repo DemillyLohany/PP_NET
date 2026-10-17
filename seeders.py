@@ -22,10 +22,10 @@ def seed_disciplinas():
                 nome="Analise e Projeto Orientado e Objeto",
                 descricao="Conceitos de análise e projeto orientados a objetos. Linguagem de modelagem unificada (UML). Objetivos, fluxo de trabalho e resultados das fases de análise de requisitos, análise e projeto do sistema."
             )
-            
-
-
         ]
 
+        session.add_all(disciplinas)
+        session.commit()
+
 if __name__ == "__main__":
-    seed_disciplinas
+    seed_disciplinas()
