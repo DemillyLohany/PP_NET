@@ -13,87 +13,150 @@
   {% set email_salvo = perfil_edicao.get('email', '') %}
   {% set vinculo_salvo = perfil_edicao.get('tipo_vinculo', '') %}
 
-  <section class="pagina-perfil container">
+  <section class="pagina-perfil">
     <div class="perfil-cabecalho">
       <span class="perfil-etiqueta">Seu espaço no N.E.T.</span>
       <h1>Perfil</h1>
       <p>Atualize suas informações para deixar sua experiência mais completa.</p>
     </div>
 
-    <form class="cartao-perfil" action="{{ url_for('perfil.salvar_perfil') }}" method="post">
-      <div class="perfil-superior">
-        <img
-          class="avatar-perfil"
-          src="{{ url_for('static', filename='imagens/div_avatar.png') }}"
-          alt="Avatar do perfil"
-        >
-
-        <div class="perfil-campos-principais">
-          <label for="tipo-vinculo">Você é</label>
-          <select id="tipo-vinculo" name="tipo_vinculo" required>
-            {% if vinculo_salvo %}
-              <option value="{{ vinculo_salvo }}" selected>{{ vinculo_salvo }}</option>
-            {% else %}
-              <option value="" selected>Selecione seu vínculo</option>
-            {% endif %}
-            <option value="Admin / Estudante">Admin / Estudante</option>
-            <option value="Estudante">Estudante</option>
-            <option value="Professor(a)">Professor(a)</option>
-          </select>
-
-          <label for="nome">Nome completo</label>
-          <input
-            id="nome"
-            name="nome"
-            type="text"
-            value="{{ nome_salvo }}"
-            placeholder=""
-            required
+    <div class="perfil-colunas">
+      <form
+        class="cartao-perfil"
+        action="{{ url_for('perfil.salvar_perfil') }}"
+        method="post"
+      >
+        <div class="perfil-superior">
+          <img
+            class="avatar-perfil"
+            src="{{ url_for('static', filename='imagens/div_avatar.png') }}"
+            alt="Avatar do perfil"
           >
-        </div>
-      </div>
 
-      <div class="perfil-campos-secundarios">
-        <div class="campo-perfil">
-          <label for="email">E-mail</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            value="{{ email_salvo }}"
-            placeholder=""
-            required
-          >
+          <div class="perfil-campos-principais">
+            <div class="campo-perfil campo-superior">
+              <label for="tipo-vinculo">Você é</label>
+
+              <select id="tipo-vinculo" name="tipo_vinculo" required>
+                <option
+                  value=""
+                  {% if not vinculo_salvo %}selected{% endif %}
+                >
+                  Selecione seu vínculo
+                </option>
+
+                <option
+                  value="Admin / Estudante"
+                  {% if vinculo_salvo == "Admin / Estudante" %}selected{% endif %}
+                >
+                  Admin / Estudante
+                </option>
+
+                <option
+                  value="Estudante"
+                  {% if vinculo_salvo == "Estudante" %}selected{% endif %}
+                >
+                  Estudante
+                </option>
+
+                <option
+                  value="Professor(a)"
+                  {% if vinculo_salvo == "Professor(a)" %}selected{% endif %}
+                >
+                  Professor(a)
+                </option>
+              </select>
+            </div>
+
+            <div class="campo-perfil campo-superior">
+              <label for="nome">Nome completo</label>
+              <input
+                id="nome"
+                name="nome"
+                type="text"
+                value="{{ nome_salvo }}"
+                required
+              >
+            </div>
+          </div>
         </div>
 
-        <div class="campo-perfil">
-          <label for="senha">Senha</label>
-          <div class="campo-senha">
+        <div class="perfil-campos-secundarios">
+          <div class="campo-perfil">
+            <label for="email">E-mail</label>
             <input
-              id="senha"
-              type="password"
-              placeholder="••••••••"
-              autocomplete="new-password"
+              id="email"
+              name="email"
+              type="email"
+              value="{{ email_salvo }}"
+              required
             >
+          </div>
+        </div>
+
+        <div class="perfil-acoes">
+          <span id="status-perfil">
+            Buscando dados do SUAP...
+          </span>
+
+          <div class="perfil-botoes">
             <button
-              class="botao-olho"
+              class="botao-sair"
               type="button"
-              onclick="alternarSenha()"
-              aria-label="Mostrar ou ocultar senha"
+              onclick="sairDaConta()"
             >
-              <i class="fa-solid fa-eye" aria-hidden="true"></i>
+              Sair
+            </button>
+
+            <button class="botao-salvar" type="submit">
+              Salvar alterações
             </button>
           </div>
         </div>
-      </div>
+      </form>
 
-      <div class="perfil-acoes">
-        <span id="status-perfil">Buscando dados do SUAP...</span>
-        <button class="botao-salvar" type="submit">Salvar alterações</button>
-      </div>
-    </form>
+      <aside
+        class="cartao-contribuicoes"
+        aria-labelledby="titulo-contribuicoes"
+      >
+        <div class="topo-contribuicoes">
+          <h2 id="titulo-contribuicoes">Minhas contribuições</h2>
+          <span class="perfil-previa">Prévia</span>
+        </div>
 
-    <a id="link-login-suap" class="link-login-suap" href="#" hidden>
+        <div class="lista-contribuicoes">
+          {% for contribuicao in contribuicoes[:3] %}
+            <article class="item-contribuicao">
+              <div class="dados-contribuicao">
+                <span class="tipo-contribuicao">
+                  {{ contribuicao.tipo }} · {{ contribuicao.disciplina }}
+                </span>
+
+                <strong class="titulo-contribuicao">
+                  {{ contribuicao.titulo }}
+                </strong>
+
+                <span class="detalhe-contribuicao">
+                  {{ contribuicao.acao }} {{ contribuicao.data }}
+                  · por {{ contribuicao.autor }}
+                </span>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+
+        <div class="mais-contribuicoes" aria-label="Mais contribuições">
+          ...
+        </div>
+      </aside>
+    </div>
+
+    <a
+      id="link-entrar-suap"
+      class="link-entrar-suap"
+      href="#"
+      hidden
+    >
       Entrar com o SUAP
     </a>
   </section>
@@ -106,11 +169,6 @@
   <script src="{{ url_for('static', filename='client.js') }}"></script>
 
   <script>
-    function alternarSenha() {
-      const campo = document.getElementById("senha");
-      campo.type = campo.type === "password" ? "text" : "password";
-    }
-
     const clienteSuap = new SuapClient(
       SUAP_URL,
       CLIENT_ID,
@@ -121,28 +179,61 @@
 
     clienteSuap.init();
 
-    const nome = document.getElementById("nome");
-    const email = document.getElementById("email");
-    const vinculo = document.getElementById("tipo-vinculo");
-    const status = document.getElementById("status-perfil");
-    const linkLogin = document.getElementById("link-login-suap");
+    function sairDaConta() {
+      if (clienteSuap.isAuthenticated()) {
+        clienteSuap.logout();
+      } else {
+        window.location.href = "{{ url_for('tela_login') }}";
+      }
+    }
+
+    const campoNome = document.getElementById("nome");
+    const campoEmail = document.getElementById("email");
+    const campoVinculo = document.getElementById("tipo-vinculo");
+    const statusPerfil = document.getElementById("status-perfil");
+    const linkEntrarSuap = document.getElementById("link-entrar-suap");
 
     if (clienteSuap.isAuthenticated()) {
       clienteSuap.getResource(
         clienteSuap.getToken().getScope(),
         function (dados) {
-          if (!nome.value) {
-            nome.value = dados.nome_usual || dados.nome || "";
+          let nomeNoVinculo = "";
+
+          if (
+            dados.vinculo &&
+            typeof dados.vinculo === "object"
+          ) {
+            nomeNoVinculo = dados.vinculo.nome || "";
           }
 
-          if (!email.value) {
-            email.value = dados.email || "";
+          const nomeCompleto =
+            dados.nome_registro ||
+            nomeNoVinculo ||
+            dados.nome ||
+            dados.nome_usual ||
+            "";
+
+          campoNome.value = nomeCompleto;
+          campoEmail.value = dados.email || "";
+          campoVinculo.value = "";
+
+          let tipoVinculo = dados.tipo_vinculo || "";
+
+          if (
+            !tipoVinculo &&
+            typeof dados.vinculo === "string"
+          ) {
+            tipoVinculo = dados.vinculo;
           }
 
-          const tipoVinculo = dados.tipo_vinculo || dados.vinculo || "";
+          if (typeof tipoVinculo !== "string") {
+            tipoVinculo = "";
+          }
 
-          if (!vinculo.value && tipoVinculo) {
-            let opcao = Array.from(vinculo.options).find(function (item) {
+          if (tipoVinculo) {
+            let opcao = Array.from(
+              campoVinculo.options
+            ).find(function (item) {
               return item.value === tipoVinculo;
             });
 
@@ -150,19 +241,43 @@
               opcao = document.createElement("option");
               opcao.value = tipoVinculo;
               opcao.textContent = tipoVinculo;
-              vinculo.appendChild(opcao);
+              campoVinculo.appendChild(opcao);
             }
 
-            vinculo.value = tipoVinculo;
+            campoVinculo.value = tipoVinculo;
           }
 
-          status.textContent = "Dados do SUAP carregados.";
+          const camposSemDados = [];
+
+          if (!nomeCompleto) {
+            camposSemDados.push("nome completo");
+          }
+
+          if (!campoEmail.value) {
+            camposSemDados.push("e-mail");
+          }
+
+          if (!tipoVinculo) {
+            camposSemDados.push("vínculo");
+          }
+
+          if (camposSemDados.length > 0) {
+            statusPerfil.textContent =
+              "A API não retornou: " +
+              camposSemDados.join(", ") +
+              ".";
+          } else {
+            statusPerfil.textContent =
+              "Dados do SUAP carregados.";
+          }
         }
       );
     } else {
-      status.textContent = "Entre com sua conta do SUAP para carregar seus dados.";
-      linkLogin.href = clienteSuap.getLoginURL();
-      linkLogin.hidden = false;
+      statusPerfil.textContent =
+        "Entre com sua conta do SUAP para carregar seus dados.";
+
+      linkEntrarSuap.href = clienteSuap.getLoginURL();
+      linkEntrarSuap.hidden = false;
     }
   </script>
 {% endblock %}
