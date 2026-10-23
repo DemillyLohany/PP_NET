@@ -1,5 +1,5 @@
 .pagina-perfil {
-  width: min(1180px, calc(100% - 72px));
+  width: min(1180px, calc(100% - 120px));
   margin: 0 auto;
   padding: 20px 0 60px;
 }
@@ -22,16 +22,17 @@
 }
 
 .perfil-cabecalho p {
+  max-width: 490px;
   margin: 0;
-  color: var(--cinza);
+  color: var(--cinza, #6e7080);
   font-size: 13px;
+  line-height: 1.55;
 }
 
-.perfil-colunas {
+.perfil-conteudo {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(250px, 0.95fr);
-  align-items: start;
-  gap: 22px;
+  grid-template-columns: 1fr;
+  gap: 18px;
 }
 
 .cartao-perfil {
@@ -147,15 +148,25 @@
 }
 
 .cartao-contribuicoes {
-  display: flex;
-  min-height: 260px;
-  flex-direction: column;
-  gap: 13px;
+  position: relative;
+  width: 100%;
+  min-height: 205px;
+  overflow: hidden;
   border: 1px solid var(--linha);
   border-radius: 8px;
-  padding: 18px 16px 13px;
+  padding: 18px 16px 14px;
   background: var(--branco);
   box-shadow: 0 12px 25px rgb(36 39 80 / 8%);
+}
+
+.cartao-contribuicoes::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 72px;
+  height: 3px;
+  background: var(--laranja);
+  content: "";
 }
 
 .topo-contribuicoes {
@@ -163,6 +174,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  margin-bottom: 12px;
 }
 
 .topo-contribuicoes h2 {
@@ -173,7 +185,6 @@
 }
 
 .perfil-previa {
-  flex: 0 0 auto;
   border-radius: 12px;
   padding: 4px 7px;
   color: #625982;
@@ -183,10 +194,12 @@
 
 .lista-contribuicoes {
   display: grid;
-  gap: 7px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
 }
 
 .item-contribuicao {
+  min-width: 0;
   border: 1px solid #ece9e4;
   border-left: 3px solid var(--laranja);
   border-radius: 6px;
@@ -194,11 +207,11 @@
   background: #fbfaf8;
 }
 
-.item-contribuicao:nth-child(2) {
+.item-contribuicao:nth-child(3n + 2) {
   border-left-color: var(--lilas);
 }
 
-.item-contribuicao:nth-child(3) {
+.item-contribuicao:nth-child(3n) {
   border-left-color: var(--azul-claro, #6eb5cd);
 }
 
@@ -213,11 +226,11 @@
   line-height: 1.3;
 }
 
-.item-contribuicao:nth-child(2) .tipo-contribuicao {
+.item-contribuicao:nth-child(3n + 2) .tipo-contribuicao {
   color: #7462b7;
 }
 
-.item-contribuicao:nth-child(3) .tipo-contribuicao {
+.item-contribuicao:nth-child(3n) .tipo-contribuicao {
   color: #4d899d;
 }
 
@@ -231,15 +244,6 @@
   color: var(--cinza);
   font-size: 9px;
   line-height: 1.35;
-}
-
-.mais-contribuicoes {
-  margin-top: auto;
-  color: var(--cinza);
-  text-align: center;
-  font-size: 16px;
-  letter-spacing: 4px;
-  line-height: 1;
 }
 
 .link-entrar-suap {
@@ -257,22 +261,17 @@
   display: none;
 }
 
-@media (max-width: 850px) {
-  .perfil-colunas {
-    grid-template-columns: 1fr;
+@media (max-width: 760px) {
+  .pagina-perfil {
+    width: calc(100% - 36px);
   }
 
-  .cartao-contribuicoes {
-    min-height: 0;
+  .lista-contribuicoes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 600px) {
-  .pagina-perfil {
-    width: calc(100% - 36px);
-    padding-top: 12px;
-  }
-
+@media (max-width: 520px) {
   .perfil-cabecalho {
     padding: 28px 0 20px;
   }
@@ -305,5 +304,9 @@
   .botao-sair,
   .botao-salvar {
     flex: 1;
+  }
+
+  .lista-contribuicoes {
+    grid-template-columns: 1fr;
   }
 }

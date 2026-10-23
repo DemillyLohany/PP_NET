@@ -17,10 +17,10 @@
     <div class="perfil-cabecalho">
       <span class="perfil-etiqueta">Seu espaço no N.E.T.</span>
       <h1>Perfil</h1>
-      <p>Atualize suas informações para deixar sua experiência mais completa.</p>
+      <p>Atualize suas informações para deixar sua experiência mais personalizada.</p>
     </div>
 
-    <div class="perfil-colunas">
+    <div class="perfil-conteudo">
       <form
         class="cartao-perfil"
         action="{{ url_for('perfil.salvar_perfil') }}"
@@ -121,7 +121,7 @@
       >
         <div class="topo-contribuicoes">
           <h2 id="titulo-contribuicoes">Minhas contribuições</h2>
-          <span class="perfil-previa">Prévia</span>
+      
         </div>
 
         <div class="lista-contribuicoes">
@@ -144,21 +144,9 @@
             </article>
           {% endfor %}
         </div>
-
-        <div class="mais-contribuicoes" aria-label="Mais contribuições">
-          ...
-        </div>
       </aside>
     </div>
 
-    <a
-      id="link-entrar-suap"
-      class="link-entrar-suap"
-      href="#"
-      hidden
-    >
-      Entrar com o SUAP
-    </a>
   </section>
 {% endblock %}
 
@@ -213,22 +201,20 @@
             dados.nome_usual ||
             "";
 
-          campoNome.value = nomeCompleto;
-          campoEmail.value = dados.email || "";
-          campoVinculo.value = "";
+          const emailDaApi =
+            dados.email_preferencial ||
+            dados.email ||
+            "";
 
           let tipoVinculo = dados.tipo_vinculo || "";
-
-          if (
-            !tipoVinculo &&
-            typeof dados.vinculo === "string"
-          ) {
-            tipoVinculo = dados.vinculo;
-          }
 
           if (typeof tipoVinculo !== "string") {
             tipoVinculo = "";
           }
+
+          campoNome.value = nomeCompleto;
+          campoEmail.value = emailDaApi;
+          campoVinculo.value = "";
 
           if (tipoVinculo) {
             let opcao = Array.from(
@@ -253,7 +239,7 @@
             camposSemDados.push("nome completo");
           }
 
-          if (!campoEmail.value) {
+          if (!emailDaApi) {
             camposSemDados.push("e-mail");
           }
 
