@@ -14,10 +14,14 @@
   {% set vinculo_salvo = perfil_edicao.get('tipo_vinculo', '') %}
 
   <section class="pagina-perfil">
+    <div class="caminho-pagina">
+      <a href="{{ url_for('home') }}">Início</a>
+      <span>›</span>
+      <strong>Perfil</strong>
+    </div>
+
     <div class="perfil-cabecalho">
-      <span class="perfil-etiqueta">Seu espaço no N.E.T.</span>
       <h1>Perfil</h1>
-      <p>Atualize suas informações para deixar sua experiência mais personalizada.</p>
     </div>
 
     <div class="perfil-conteudo">
@@ -121,7 +125,6 @@
       >
         <div class="topo-contribuicoes">
           <h2 id="titulo-contribuicoes">Minhas contribuições</h2>
-      
         </div>
 
         <div class="lista-contribuicoes">
@@ -146,7 +149,6 @@
         </div>
       </aside>
     </div>
-
   </section>
 {% endblock %}
 
@@ -171,7 +173,7 @@
       if (clienteSuap.isAuthenticated()) {
         clienteSuap.logout();
       } else {
-        window.location.href = "{{ url_for('tela_login') }}";
+        window.location.href = "/";
       }
     }
 
@@ -179,7 +181,6 @@
     const campoEmail = document.getElementById("email");
     const campoVinculo = document.getElementById("tipo-vinculo");
     const statusPerfil = document.getElementById("status-perfil");
-    const linkEntrarSuap = document.getElementById("link-entrar-suap");
 
     if (clienteSuap.isAuthenticated()) {
       clienteSuap.getResource(
@@ -261,9 +262,6 @@
     } else {
       statusPerfil.textContent =
         "Entre com sua conta do SUAP para carregar seus dados.";
-
-      linkEntrarSuap.href = clienteSuap.getLoginURL();
-      linkEntrarSuap.hidden = false;
     }
   </script>
 {% endblock %}

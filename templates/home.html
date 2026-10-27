@@ -1,28 +1,153 @@
 {% extends 'base.html' %}
 
+{% block title %}
+  N.E.T. — Núcleo de Estudos Técnicos
+{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
 {% block main %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+  <div class="barra-entrada container">
     <!-- botão de login -->
-    <div align="right">
-        <a href="#" id="suap-btn-login">
-            <button class="home" type="button">Login &rarr;</button>
+  </div>
+
+  <section class="inicio-hero container">
+    <div class="inicio-texto">
+
+      <h1>
+        Boas-vindas 
+        ao <em>Núcleo de Estudos Técnicos</em>  
+      </h1>
+
+      <p>
+        O repositório colaborativo criado por alunos e professores para transformar 
+        a sua jornada no curso em uma experiência mais leve, organizada e compartilhada.
+      </p>
+
+      <div class="inicio-acoes">
+        <a class="botao-principal" href="{{ url_for('conteudos.conteudos') }}">
+          Explorar conteúdos
         </a>
+
+        <a class="link-perfil" href="{{ url_for('perfil.exibir_perfil') }}">
+          Faça parte do N.E.T.
+        </a>
+      </div>
     </div>
 
-    <section class="inicio-hero container">
-        <div class="inicio-texto">
-            <h1>Boas-vindas ao N.E.T.</h1>
-            <h2>Entre agora na jornada da programação!</h2>
-        </div>
+    <div class="inicio-imagem">
+      <img
+        src="{{ url_for('static', filename='imagens/img_home.png') }}"
+        alt="Estudante usando um notebook"
+      >
+    </div>
+  </section>
 
-        <div class="inicio-imagem">
-            <img
-            src="{{ url_for('static', filename='imagens/img_home.png') }}"
-            alt="Estudante usando um notebook"
-            >
-        </div>
-    </section>
+  <section class="secao-frase container">
+    <span class="inicio-etiqueta">por que existe?</span>
 
+    <h2>
+      Aprender fica mais leve quando ninguém aprende sozinho.
+    </h2>
+  </section>
+
+  <section class="secao-acervo container">
+    <div class="cabecalho-acervo">
+      <span class="inicio-etiqueta">uma prévia do acervo</span>
+
+      <h2>
+        Comece por onde
+        <em>faz sentido para você.</em>
+      </h2>
+    </div>
+
+    <div class="cartoes-acervo">
+      <article class="cartao-acervo">
+        <img
+          src="{{ url_for('static', filename='imagens/img1_home.png') }}"
+          alt="Ilustração da disciplina de programação"
+        >
+
+        <div class="cartao-corpo">
+          <span class="cartao-etiqueta">disciplina</span>
+
+          <h3>Programação de Sistemas para Internet</h3>
+
+          <p>Desenvolvimento de aplicações web com Python e Flask.</p>
+
+          <a class="cartao-link" href="{{ url_for('disciplinas.disciplinas') }}">
+            abrir matéria &#8599;
+          </a>
+        </div>
+      </article>
+
+      <article class="cartao-acervo">
+        <img
+          src="{{ url_for('static', filename='imagens/imag2_home.png') }}"
+          alt="Ilustração da disciplina de banco de dados"
+        >
+
+        <div class="cartao-corpo">
+          <span class="cartao-etiqueta">disciplina</span>
+
+          <h3>Banco de Dados</h3>
+
+          <p>Modelagem de dados e uso do SQLModel no projeto.</p>
+
+          <a class="cartao-link" href="{{ url_for('disciplinas.disciplinas') }}">
+            abrir matéria &#8599;
+          </a>
+        </div>
+      </article>
+
+      <article class="cartao-acervo">
+        <img
+          src="{{ url_for('static', filename='imagens/img3_home.png') }}"
+          alt="Ilustração da disciplina de design web"
+        >
+
+        <div class="cartao-corpo">
+          <span class="cartao-etiqueta">disciplina</span>
+
+          <h3>Design Web</h3>
+
+          <p>Interface, experiência do usuário e folhas de estilo.</p>
+
+          <a class="cartao-link" href="{{ url_for('disciplinas.disciplinas') }}">
+            abrir matéria &#8599;
+          </a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+    <div class="faixa-escura"></div>
+
+  <section class="secao-fechamento container">
+    <span class="simbolo-fechamento" aria-hidden="true"></span>
+
+    <span class="inicio-etiqueta">feito para a nossa jornada</span>
+
+    <h2>
+      A próxima descoberta
+      <em>pode começar aqui.</em>
+    </h2>
+
+    <p>
+      O N.E.T. é um convite para aprender em rede, valorizar
+      o que já foi descoberto e deixar o caminho um pouco
+      mais claro para quem vem depois.
+    </p>
+
+    <a
+      class="botao-principal botao-fechamento entrar-suap"
+      href="#"
+    >
+      Quero fazer parte
+    </a>
+  </section>
 {% endblock %}
 
 <!-- para integrar com o SUAP -->
@@ -31,13 +156,14 @@
   <script src="{{ url_for('static', filename='js.cookie.js') }}"></script>
   <script src="{{ url_for('static', filename='settings.js') }}"></script>
   <script src="{{ url_for('static', filename='client.js') }}"></script>
+
   <script>
     var clienteSuap = new SuapClient(SUAP_URL, CLIENT_ID, HOME_URI, REDIRECT_URI, SCOPE);
     clienteSuap.init();
+
     $(document).ready(function () {
-        var urlLogin = clienteSuap.getLoginURL();
-        $("#suap-btn-login").attr('href', urlLogin);
-        $("#suap-btn-cadastro").attr('href', urlLogin);
+      var urlLogin = clienteSuap.getLoginURL();
+      $(".entrar-suap").attr("href", urlLogin);
     });
   </script>
 {% endblock %}

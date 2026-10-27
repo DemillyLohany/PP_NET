@@ -1,4 +1,42 @@
-:root{--fundo:#f6f3ee;--branco:#fffdf9;--azul:#242750;--cinza:#6e7080;--laranja:#ed7d52;--lilas:#b9b1f6;--linha:#dfddd8}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-width:320px;color:var(--azul);background:var(--fundo);font-family:Arial,sans-serif}a{color:inherit;text-decoration:none}button,input,textarea{font:inherit}button{cursor:pointer}.container{width:min(1180px,calc(100% - 72px));margin:0 auto}main{min-height:600px}h1,h2,h3,h4,p{margin-top:0}@media(max-width:700px){.container{width:calc(100% - 36px)}}
+:root
+    {--fundo:#f6f3ee;
+    --branco:#fffdf9;
+    --azul:#242750;
+    --cinza:#6e7080;
+    --laranja:#ed7d52;
+    --lilas:#b9b1f6;
+    --linha:#dfddd8}
+    *{box-sizing:border-box}
+
+html
+    {scroll-behavior:smooth}
+
+body
+    {margin:0;min-width:320px;
+    color:var(--azul);
+    background:var(--fundo);
+    font-family:Arial,sans-serif; 
+    background-image:radial-gradient(rgba(139, 114, 231, .1) .8px,transparent .8px)
+    }
+
+a   {color:inherit;
+    text-decoration:none}
+
+button,input,textarea
+    {font:inherit}
+
+button
+    {cursor:pointer}
+
+.container {
+  width: min(1680px, calc(100% - 240px));
+  margin: 0 auto;
+}
+
+main{min-height:600px}
+
+h1,h2,h3,h4,p
+    {margin-top:0}
 
 .janela-flutuante{
     display: none;

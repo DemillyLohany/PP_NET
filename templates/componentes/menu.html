@@ -26,4 +26,14 @@
     <a class="{% if request.endpoint == 'notificacoes.tela_notificacoes' %}ativo{% endif %}" href="{{ url_for('notificacoes.tela_notificacoes') }}">Notificações</a>
     <a class="{% if request.endpoint == 'perfil.exibir_perfil' %}ativo{% endif %}" href="{{ url_for('perfil.exibir_perfil') }}">Perfil</a>
   </nav>
+
+  {% if request.endpoint == 'home' %}
+    <!-- botão de login -->
+    <a
+      class="botao-entrar-suap entrar-suap"
+      href="#"
+    >
+      Quero participar
+    </a>
+  {% endif %}
 </header>

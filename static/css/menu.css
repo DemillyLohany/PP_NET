@@ -3,11 +3,11 @@
   min-height: 95px;
   display: grid;
   position: relative;
-  grid-template-columns: minmax(70px, 2.6fr) minmax(160px, 208px) minmax(0, 0.6fr);
+  grid-template-columns: minmax(70px, 1fr) minmax(220px, 380px) auto auto;
   align-items: center;
-  gap: clamp(8px, 1.5vw, 24px);
-  padding-left: clamp(18px, 4vw, 72px);
-  padding-right: clamp(18px, 4vw, 72px);
+  gap: clamp(10px, 1.6vw, 28px);
+  padding-left: calc((100% - min(1680px, 100% - 240px)) / 2);
+  padding-right: calc((100% - min(1680px, 100% - 240px)) / 2);
   background: var(--fundo);
 }
 
@@ -71,7 +71,6 @@
 }
 
 .menu-conteudo {
-  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -96,4 +95,21 @@
   border-bottom: 2px solid var(--laranja);
   padding-bottom: 7px;
   color: var(--azul);
+}
+
+.botao-entrar-suap {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  border-radius: 4px;
+  padding: 0 15px;
+  color: #ffffff;
+  background: var(--azul);
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.botao-entrar-suap:hover {
+  background: #30346a;
 }

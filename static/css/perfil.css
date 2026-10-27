@@ -1,11 +1,23 @@
 .pagina-perfil {
   width: min(1180px, calc(100% - 120px));
   margin: 0 auto;
-  padding: 20px 0 60px;
+  padding: 0 0 60px;
+}
+
+.caminho-pagina {
+  display: flex;
+  gap: 9px;
+  padding-top: 24px;
+  color: #99959e;
+  font: 10px monospace;
+}
+
+.caminho-pagina strong {
+  color: var(--azul, #242750);
 }
 
 .perfil-cabecalho {
-  padding: 32px 0 25px;
+  padding: 26px 0 25px;
 }
 
 .perfil-etiqueta {
@@ -15,7 +27,7 @@
 }
 
 .perfil-cabecalho h1 {
-  margin: 12px 0 5px;
+  margin: 0;
   color: var(--azul);
   font-size: clamp(2.6rem, 5vw, 4rem);
   line-height: 1;
@@ -23,7 +35,7 @@
 
 .perfil-cabecalho p {
   max-width: 490px;
-  margin: 0;
+  margin: 10px 0 0;
   color: var(--cinza, #6e7080);
   font-size: 13px;
   line-height: 1.55;
@@ -273,7 +285,7 @@
 
 @media (max-width: 520px) {
   .perfil-cabecalho {
-    padding: 28px 0 20px;
+    padding: 22px 0 20px;
   }
 
   .perfil-superior {
