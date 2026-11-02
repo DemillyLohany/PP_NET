@@ -397,3 +397,19 @@
   color: var(--lilas);
   font-size: 20px;
 }
+
+.div-notificacoes{
+  background-color: #d75f38;
+  color: #d75f38;
+  min-height: 400px;
+  display: flex;
+  justify-content: center;
+}
+
+.exibir-not{
+  background-color: #dfddd8;
+  color: #dfddd8;
+  height: 250px;
+  
+
+}
