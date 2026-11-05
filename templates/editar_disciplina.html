@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Editar Disciplina — N.E.T.
+{% endblock %}
+
+{% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/editar_disciplina.css') }}"
+>
+{% endblock %}
+
+{% block main %}
+<section class="pagina-editar_disciplinas">
+  <div class="container">
+
+    <div class="caminho-pagina">
+      <a href="{{ url_for('home') }}">
+        Início
+      </a>
+
+      <span>›</span>
+
+      <a href="{{ url_for('disciplinas.disciplinas') }}">
+        Disciplinas
+      </a>
+
+      <span>›</span>
+
+      <strong>
+        Editar Disciplina
+      </strong>
+    </div>
+    
+    {% if erro %}
+        <p class="erro">{{ erro }}</p>
+    {% endif %}
+    
+    <div class="cabecalho-pagina">
+      <h1>editar disciplina</h1>
+    </div>
+
+    <form method="post">
+            <label for="nome">Nome: </label> <input type="text" id="nome" name="nome" value="{{disciplina.nome}}" required>
+            <label for="descricao">Descrição: </label> <textarea name="descricao" id="descricao" required>{{disciplina.descricao}}</textarea>
+            <button type="submit">Salvar</button>
+          </form>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script
+  src="{{ url_for('static', filename='js/editar_disciplina.js') }}"
+></script>
+{% endblock %}
