@@ -9,35 +9,30 @@
 {% endblock %}
 
 {% block main %}
-  <div class="barra-entrada container">
-    <!-- botão de login -->
-  </div>
 
-  <section class="inicio-hero container">
-    <div class="inicio-texto">
-
+  <section class="bloco-inicial container">
+    <div class="texto-inicial">
       <h1>
-        Boas-vindas 
-        ao <em>Núcleo de Estudos Técnicos</em>  
+        Boas-vindas ao <em>Núcleo de Estudos Técnicos.</em>
       </h1>
 
       <p>
-        O repositório colaborativo criado por alunos e professores para transformar 
+        O repositório colaborativo criado por alunos e professores para transformar
         a sua jornada no curso em uma experiência mais leve, organizada e compartilhada.
       </p>
 
-      <div class="inicio-acoes">
-        <a class="botao-principal" href="{{ url_for('conteudos.conteudos') }}">
-          Explorar conteúdos
+      <div class="acoes-iniciais">
+        <a class="botao-azul" href="{{ url_for('conteudos.conteudos') }}">
+          Explorar materiais
         </a>
 
-        <a class="link-perfil" href="{{ url_for('perfil.exibir_perfil') }}">
+        <a class="link-simples entrar-suap" href="#">
           Faça parte do N.E.T.
         </a>
       </div>
     </div>
 
-    <div class="inicio-imagem">
+    <div class="imagem-inicial">
       <img
         src="{{ url_for('static', filename='imagens/img_home.png') }}"
         alt="Estudante usando um notebook"
@@ -45,17 +40,73 @@
     </div>
   </section>
 
-  <section class="secao-frase container">
-    <span class="inicio-etiqueta">por que existe?</span>
+  <section class="bloco-atalhos container">
+    <article class="atalho">
+      <h2 class="titulo-atalho atalho-laranja">Junte-se a nós!</h2>
 
-    <h2>
-      Aprender fica mais leve quando ninguém aprende sozinho.
-    </h2>
+      <div class="corpo-atalho">
+        <p>
+          Aqui você pode construir as melhores soluções para te ajudar a estudar
+          no curso de programação com mais segurança.
+        </p>
+
+        <a class="botao-azul" href="{{ url_for('conteudos.conteudos') }}">
+          Contribuir acervo
+        </a>
+      </div>
+    </article>
+
+    <article class="atalho">
+      <h2 class="titulo-atalho atalho-azul">Dúvidas sobre o curso?</h2>
+
+      <div class="corpo-atalho">
+        <p>
+          Acesse materiais que tirem uma dúvida geral sobre o curso.
+          Se quiser consultar, acesse:
+        </p>
+
+        <a class="botao-laranja" href="{{ url_for('disciplinas.disciplinas') }}">
+          consulta
+        </a>
+      </div>
+    </article>
   </section>
 
-  <section class="secao-acervo container">
+  <section class="bloco-porque">
+    <div class="conteudo-porque container">
+      <div class="lado-texto">
+        <span class="etiqueta">por que existe?</span>
+
+        <h2>
+          Aprender fica mais leve quando ninguém aprende sozinho.
+        </h2>
+      </div>
+
+      <div class="lista-motivos">
+        <div class="motivo">
+          <span class="numero">01</span>
+          <h3>Encontrar</h3>
+          <p>Menos tempo procurando. Mais tempo colocando a mão na massa.</p>
+        </div>
+
+        <div class="motivo">
+          <span class="numero">02</span>
+          <h3>Organizar</h3>
+          <p>Materiais reunidos por tema, etapa e contexto para fazer sentido.</p>
+        </div>
+
+        <div class="motivo">
+          <span class="numero">03</span>
+          <h3>Reutilizar</h3>
+          <p>Uma boa descoberta pode virar o ponto de partida de outra pessoa.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloco-acervo container">
     <div class="cabecalho-acervo">
-      <span class="inicio-etiqueta">uma prévia do acervo</span>
+      <span class="etiqueta">uma prévia do acervo</span>
 
       <h2>
         Comece por onde
@@ -63,72 +114,95 @@
       </h2>
     </div>
 
-    <div class="cartoes-acervo">
+    <div class="lista-cartoes">
       <article class="cartao-acervo">
         <img
           src="{{ url_for('static', filename='imagens/img1_home.png') }}"
-          alt="Ilustração da disciplina de programação"
+          alt="Formas coloridas conectadas"
         >
 
-        <div class="cartao-corpo">
-          <span class="cartao-etiqueta">disciplina</span>
-
-          <h3>Programação de Sistemas para Internet</h3>
-
-          <p>Desenvolvimento de aplicações web com Python e Flask.</p>
-
-          <a class="cartao-link" href="{{ url_for('disciplinas.disciplinas') }}">
-            abrir matéria &#8599;
-          </a>
+        <div class="corpo-cartao">
+          <h3>Da primeira tag à primeira página</h3>
+          <p>Uma base para entender como a web gira.</p>
+          <a class="link-cartao" href="{{ url_for('conteudos.conteudos') }}">Ver conteúdos</a>
         </div>
       </article>
 
       <article class="cartao-acervo">
         <img
           src="{{ url_for('static', filename='imagens/imag2_home.png') }}"
-          alt="Ilustração da disciplina de banco de dados"
+          alt="Cubo colorido de várias faces"
         >
 
-        <div class="cartao-corpo">
-          <span class="cartao-etiqueta">disciplina</span>
-
-          <h3>Banco de Dados</h3>
-
-          <p>Modelagem de dados e uso do SQLModel no projeto.</p>
-
-          <a class="cartao-link" href="{{ url_for('disciplinas.disciplinas') }}">
-            abrir matéria &#8599;
-          </a>
+        <div class="corpo-cartao">
+          <h3>Raciocínio para resolver problemas</h3>
+          <p>Conceitos que acompanham qualquer linguagem.</p>
+          <a class="link-cartao" href="{{ url_for('conteudos.conteudos') }}">Ver conteúdos</a>
         </div>
       </article>
 
       <article class="cartao-acervo">
         <img
           src="{{ url_for('static', filename='imagens/img3_home.png') }}"
-          alt="Ilustração da disciplina de design web"
+          alt="Tela de computador com código"
         >
 
-        <div class="cartao-corpo">
-          <span class="cartao-etiqueta">disciplina</span>
-
-          <h3>Design Web</h3>
-
-          <p>Interface, experiência do usuário e folhas de estilo.</p>
-
-          <a class="cartao-link" href="{{ url_for('disciplinas.disciplinas') }}">
-            abrir matéria &#8599;
-          </a>
+        <div class="corpo-cartao">
+          <h3>Referências para tirar ideias do papel</h3>
+          <p>Descrições e processos para construir com atenção.</p>
+          <a class="link-cartao" href="{{ url_for('conteudos.conteudos') }}">Ver conteúdos</a>
         </div>
       </article>
     </div>
   </section>
 
-    <div class="faixa-escura"></div>
+  <section class="bloco-como-funciona">
+    <div class="conteudo-faixa container">
+      <div class="lado-texto lado-claro">
+        <span class="etiqueta">como funciona</span>
 
-  <section class="secao-fechamento container">
-    <span class="simbolo-fechamento" aria-hidden="true"></span>
+        <h2>
+          Uma rede de troca, não só de arquivos.
+        </h2>
 
-    <span class="inicio-etiqueta">feito para a nossa jornada</span>
+        <p>
+          O N.E.T. transforma a experiência de cada pessoa
+          em um atalho para as próximas decisões.
+        </p>
+
+        <a class="botao-branco" href="{{ url_for('conteudos.conteudos') }}">
+          Comece a ajudar
+        </a>
+      </div>
+
+      <div class="lista-motivos lista-clara">
+        <div class="motivo">
+          <span class="numero">01</span>
+          <h3>Você encontra</h3>
+          <p>Acesse materiais indicados por quem está vivendo os mesmos desafios da aprendizagem.</p>
+        </div>
+
+        <div class="motivo">
+          <span class="numero">02</span>
+          <h3>Você compartilha</h3>
+          <p>Registre aquela referência, anotação ou descoberta que fez diferença no seu caminho.</p>
+        </div>
+
+        <div class="motivo">
+          <span class="numero">03</span>
+          <h3>Todo mundo evolui</h3>
+          <p>O conhecimento volta para a comunidade mais contextualizado e pronto para ser reutilizado.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloco-final container">
+    <img
+      class="simbolo-final"
+      src="{{ url_for('static', filename='imagens/elemento_logo.png') }}"
+      alt=""
+    >
 
     <h2>
       A próxima descoberta
@@ -136,21 +210,19 @@
     </h2>
 
     <p>
-      O N.E.T. é um convite para aprender em rede, valorizar
-      o que já foi descoberto e deixar o caminho um pouco
+      Com o N.E.T. você pode aprender através da colaboração coletiva,
+      valorizar o que já foi descoberto e deixar o caminho um pouco
       mais claro para quem vem depois.
     </p>
 
-    <a
-      class="botao-principal botao-fechamento entrar-suap"
-      href="#"
-    >
+    <a class="botao-azul botao-final entrar-suap" href="#">
       Quero fazer parte
     </a>
   </section>
+
 {% endblock %}
 
-<!-- para integrar com o SUAP -->
+<!-- integrar com o SUAP -->
 {% block scripts %}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="{{ url_for('static', filename='js.cookie.js') }}"></script>
