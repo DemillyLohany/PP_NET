@@ -88,3 +88,78 @@ def excluir_conteudo(conteudo_id):
             disciplina_id=disciplina_id
         )
     )
+
+
+@conteudos_bp.route("/criar")
+def criar():
+    return render_template("criar_conteudos.html")
+
+@conteudos_bp.route("/criar/<int:disciplina_id>", methods=["POST"])
+def criar_conteudo(disciplina_id):
+    titulo = request.form.get("titulo", "").strip()
+    descricao = request.form.get("descricao", "").strip()
+    with Session(engine) as session:
+        disciplina = session.get(Disciplina, disciplina_id)
+
+        if disciplina is None:
+            return "Disciplina não encontrada.", 404
+
+        if request.method == "POST":
+            titulo = request.form.get("titulo", "").strip()
+            descricao = request.form.get("descricao", "").strip()
+
+            if not titulo or not descricao:
+                return render_template(
+                    "criar_conteudo.html",
+                    disciplina=disciplina,
+                    erro="Preencha o titulo e a descrição.",
+                    titulo=titulo,
+                    descricao=descricao
+                ), 400
+
+            novo_conteudo = Conteudo(
+                titulo=titulo,
+                descricao=descricao,
+                disciplina_id=disciplina_id
+            )
+
+            session.add(novo_conteudo)
+            session.commit()
+
+            return redirect(url_for("conteudos.conteudo",disciplina_id=disciplina_id))
+    return render_template("criar_conteudos.html",disciplina=disciplina)
+
+@conteudos_bp.route(
+    "/editar/<int:conteudo_id>",
+    methods=["GET", "POST"]
+)
+def editar_conteudo(conteudo_id):
+    with Session(engine) as session:
+        conteudo = session.get(Conteudo, conteudo_id)
+
+        if conteudo is None:
+            return "Conteúdo não encontrado", 404
+
+        if request.method == "POST":
+            titulo = request.form.get("titulo", "").strip()
+            descricao = request.form.get("descricao", "").strip()
+
+            if not titulo or not descricao:
+                return render_template(
+                    "editar_conteudos.html",
+                    conteudo=conteudo,
+                    erro="Preencha o titulo e a descrição."
+                ), 400
+
+            conteudo.titulo = titulo
+            conteudo.descricao = descricao
+
+            session.add(conteudo)
+            session.commit()
+
+            return redirect(url_for("conteudos.conteudo",  disciplina_id=conteudo.disciplina_id))
+
+        return render_template(
+            "editar_conteudos.html",
+            conteudo=conteudo
+        )

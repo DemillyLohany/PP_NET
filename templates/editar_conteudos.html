@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Editar Conteúdo — N.E.T.
+{% endblock %}
+
+{% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/editar_conteudos.css') }}"
+>
+{% endblock %}
+
+{% block main %}
+<section class="pagina-editar_conteudos">
+  <div class="container">
+
+    <div class="caminho-pagina">
+      <a href="{{ url_for('home') }}">
+        Início
+      </a>
+
+      <span>›</span>
+
+      <a href="{{ url_for('conteudos.conteudos') }}">
+        Conteúdos 
+      </a>
+
+      <span>›</span>
+
+      <strong>
+        Editar Conteúdo
+      </strong>
+    </div>
+    
+    {% if erro %}
+        <p class="erro">{{ erro }}</p>
+    {% endif %}
+    
+    <div class="cabecalho-pagina">
+      <h1>Editar Conteúdo</h1>
+    </div>
+
+    <form method="post">
+            <label for="titulo"> Título: </label> <input type="text" id="titulo" name="titulo" value="{{conteudo.titulo}}" required>
+            <label for="descricao">Descrição: </label> <textarea name="descricao" id="descricao" required>{{conteudo.descricao}}</textarea>
+            <button type="submit">Salvar</button>
+          </form>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script
+  src="{{ url_for('static', filename='js/editar_conteudo.js') }}"
+></script>
+{% endblock %}

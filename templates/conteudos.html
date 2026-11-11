@@ -45,6 +45,22 @@
       {% for c in conteudos %}
       <article class="card-disciplina">
         <div class="topo-card">
+          <span class="numero-conteudo">
+            {{ "%02d"|format(loop.index) }}
+          </span>
+
+          <a
+            class="botao-editar"
+            href="{{ url_for(
+              'conteudos.editar_conteudo',
+              conteudo_id=c.id
+            ) }}"
+          >
+            <i class="fa-solid fa-pen"></i>
+            Editar
+          </a>
+        </div>
+        <div class="topo-card">
           <span class="numero-disciplina">{{ "%02d"|format(loop.index) }}</span>
           <span class="etiqueta">conteúdo</span>
         </div>
