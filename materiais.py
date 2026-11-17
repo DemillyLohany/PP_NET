@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request
+from flask import Blueprint, render_template, redirect, url_for, request, session
 from sqlmodel import Session, select
 
 from database import engine
@@ -10,18 +10,18 @@ materiais_bp = Blueprint("materiais", __name__)
 
 @materiais_bp.route("/materiais/<int:conteudo_id>")
 def ver_materiais(conteudo_id):
-    with Session(engine) as session:
-        conteudo_atual = session.get(Conteudo, conteudo_id)
+    with Session(engine) as banco:
+        conteudo_atual = banco.get(Conteudo, conteudo_id)
 
         if conteudo_atual is None:
             return "Não encontramos o conteúdo.", 404
 
-        disciplina_atual = session.get(
+        disciplina_atual = banco.get(
             Disciplina,
             conteudo_atual.disciplina_id
         )
 
-        lista_materiais = session.exec(
+        lista_materiais = banco.exec(
             select(Material).where(
                 Material.conteudo_id == conteudo_id
             )
@@ -51,12 +51,14 @@ def adicionar_material(conteudo_id):
     novo_material = Material(
         titulo=titulo,
         url=url,
-        conteudo_id=conteudo_id
+        conteudo_id=conteudo_id,
+        # guarda quem enviou, para aparecer nas contribuições do perfil
+        autor_id=session.get("usuario_id")
     )
 
-    with Session(engine) as session:
-        session.add(novo_material)
-        session.commit()
+    with Session(engine) as banco:
+        banco.add(novo_material)
+        banco.commit()
 
     return redirect(
         url_for("materiais.ver_materiais", conteudo_id=conteudo_id)
@@ -68,15 +70,15 @@ def adicionar_material(conteudo_id):
     methods=["POST"]
 )
 def excluir_material(material_id):
-    with Session(engine) as session:
-        material = session.get(Material, material_id)
+    with Session(engine) as banco:
+        material = banco.get(Material, material_id)
 
         if material is None:
             return "Material não encontrado.", 404
 
         conteudo_id = material.conteudo_id
-        session.delete(material)
-        session.commit()
+        banco.delete(material)
+        banco.commit()
 
     return redirect(
         url_for("materiais.ver_materiais", conteudo_id=conteudo_id)

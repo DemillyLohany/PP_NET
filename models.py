@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlmodel import SQLModel, Field, Relationship
 from pydantic import EmailStr
 from typing import List, Optional
@@ -19,6 +21,9 @@ class Usuario(SQLModel, table=True):
     # Obs.: seria legal que a foto viesse do SUAP (foto_url), mas podesse ser alterada pelo usuário
     foto_url: Optional[str] = Field(default=None)
 
+    # liga o usuário ao que ele criou (usado na tela de perfil)
+    conteudos: List["Conteudo"] = Relationship(back_populates="autor")
+    materiais: List["Material"] = Relationship(back_populates="autor")
 
 
 class Disciplina(SQLModel, table=True):
@@ -34,11 +39,17 @@ class Conteudo(SQLModel, table=True):
     titulo: str = Field(nullable=False)
     descricao: Optional[str] = Field(default=None)
     
-    # faz a ligacao direta deste conteudo com o id de uma disciplina
     disciplina_id: int = Field(foreign_key="disciplina.id", nullable=False)
 
-    # serve para acessar os dados da disciplina dona deste conteudo
     disciplina: Disciplina = Relationship(back_populates="conteudos")
+
+    # quem criou este conteudo (fica vazio quando a pessoa cria sem estar logada no SUAP)
+    autor_id: Optional[int] = Field(default=None, foreign_key="usuario.id")
+
+    autor: Optional[Usuario] = Relationship(back_populates="conteudos")
+
+    # quando este conteudo foi criado (aparece na tela de perfil)
+    criado_em: datetime = Field(default_factory=datetime.now)
     
     materiais: List["Material"] = Relationship(back_populates="conteudo")
 
@@ -47,8 +58,14 @@ class Material(SQLModel, table=True):
     titulo: str = Field(nullable=False)
     url: str = Field(nullable=False)
     
-    # faz a ligacao deste material especifico com o id de um conteudo
     conteudo_id: int = Field(foreign_key="conteudo.id", nullable=False)
     
-    # serve para acessar as informacoes do conteudo dono deste material
     conteudo: Conteudo = Relationship(back_populates="materiais")
+
+    # quem enviou este material (fica vazio quando a pessoa envia sem estar logada no SUAP)
+    autor_id: Optional[int] = Field(default=None, foreign_key="usuario.id")
+
+    # serve para acessar os dados de quem enviou
+    autor: Optional[Usuario] = Relationship(back_populates="materiais")
+
+    criado_em: datetime = Field(default_factory=datetime.now)

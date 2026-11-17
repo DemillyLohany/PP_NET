@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request
+from flask import Blueprint, render_template, redirect, url_for, request, session
 from sqlmodel import Session, select
 
 from database import engine
@@ -16,8 +16,9 @@ def conteudos():
 
 @conteudos_bp.route("/conteudo/<int:disciplina_id>", methods=["GET", "POST"])
 def conteudo(disciplina_id):
-    with Session(engine) as session:
-        disciplina = session.get(Disciplina, disciplina_id)
+    # o banco se chama "banco" para não confundir com a sessão do Flask
+    with Session(engine) as banco:
+        disciplina = banco.get(Disciplina, disciplina_id)
 
         if disciplina is None:
             return "Não encontramos a disciplina.", 404
@@ -30,7 +31,7 @@ def conteudo(disciplina_id):
                 return render_template(
                     "conteudos.html",
                     disciplina=disciplina,
-                    conteudos=session.exec(
+                    conteudos=banco.exec(
                         select(Conteudo).where(
                             Conteudo.disciplina_id == disciplina_id
                         )
@@ -41,11 +42,13 @@ def conteudo(disciplina_id):
             novo_conteudo = Conteudo(
                 titulo=titulo,
                 descricao=descricao,
-                disciplina_id=disciplina_id
+                disciplina_id=disciplina_id,
+                # guarda quem criou, para aparecer nas contribuições do perfil
+                autor_id=session.get("usuario_id")
             )
 
-            session.add(novo_conteudo)
-            session.commit()
+            banco.add(novo_conteudo)
+            banco.commit()
 
             return redirect(
                 url_for(
@@ -58,7 +61,7 @@ def conteudo(disciplina_id):
             Conteudo.disciplina_id == disciplina_id
         )
 
-        lista_conteudos = session.exec(busca).all()
+        lista_conteudos = banco.exec(busca).all()
 
         return render_template(
             "conteudos.html",
@@ -72,15 +75,15 @@ def conteudo(disciplina_id):
     methods=["POST"]
 )
 def excluir_conteudo(conteudo_id):
-    with Session(engine) as session:
-        conteudo_atual = session.get(Conteudo, conteudo_id)
+    with Session(engine) as banco:
+        conteudo_atual = banco.get(Conteudo, conteudo_id)
 
         if conteudo_atual is None:
             return "Conteúdo não encontrado.", 404
 
         disciplina_id = conteudo_atual.disciplina_id
-        session.delete(conteudo_atual)
-        session.commit()
+        banco.delete(conteudo_atual)
+        banco.commit()
 
     return redirect(
         url_for(
@@ -98,8 +101,8 @@ def criar():
 def criar_conteudo(disciplina_id):
     titulo = request.form.get("titulo", "").strip()
     descricao = request.form.get("descricao", "").strip()
-    with Session(engine) as session:
-        disciplina = session.get(Disciplina, disciplina_id)
+    with Session(engine) as banco:
+        disciplina = banco.get(Disciplina, disciplina_id)
 
         if disciplina is None:
             return "Disciplina não encontrada.", 404
@@ -120,11 +123,13 @@ def criar_conteudo(disciplina_id):
             novo_conteudo = Conteudo(
                 titulo=titulo,
                 descricao=descricao,
-                disciplina_id=disciplina_id
+                disciplina_id=disciplina_id,
+                # guarda quem criou, para aparecer nas contribuições do perfil
+                autor_id=session.get("usuario_id")
             )
 
-            session.add(novo_conteudo)
-            session.commit()
+            banco.add(novo_conteudo)
+            banco.commit()
 
             return redirect(url_for("conteudos.conteudo",disciplina_id=disciplina_id))
     return render_template("criar_conteudos.html",disciplina=disciplina)
@@ -134,8 +139,8 @@ def criar_conteudo(disciplina_id):
     methods=["GET", "POST"]
 )
 def editar_conteudo(conteudo_id):
-    with Session(engine) as session:
-        conteudo = session.get(Conteudo, conteudo_id)
+    with Session(engine) as banco:
+        conteudo = banco.get(Conteudo, conteudo_id)
 
         if conteudo is None:
             return "Conteúdo não encontrado", 404
@@ -154,8 +159,8 @@ def editar_conteudo(conteudo_id):
             conteudo.titulo = titulo
             conteudo.descricao = descricao
 
-            session.add(conteudo)
-            session.commit()
+            banco.add(conteudo)
+            banco.commit()
 
             return redirect(url_for("conteudos.conteudo",  disciplina_id=conteudo.disciplina_id))
 

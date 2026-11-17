@@ -28,6 +28,24 @@
 
   {% include 'componentes/rodape.html' %}
 
+  <script>
+    var netToken = document.cookie.match(/suapToken=([^;]+)/);
+
+    var netCorpo = new FormData();
+    netCorpo.append("token", netToken ? decodeURIComponent(netToken[1]) : "");
+
+    fetch("/entrar/suap", { method: "POST", body: netCorpo })
+      .then(function (resposta) {
+        return resposta.json();
+      })
+      .then(function (dados) {
+
+        if (dados.novo && document.getElementById("contribuicoes")) {
+          window.location.reload();
+        }
+      });
+  </script>
+
   {% block scripts %}
   {% endblock %}
 </body>
