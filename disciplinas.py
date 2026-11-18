@@ -61,7 +61,7 @@ def criar_disciplina():
 
 
 @disciplinas_bp.route(
-    "/editar/<int:disciplina_id>",
+    "/editar_disciplina/<int:disciplina_id>",
     methods=["GET", "POST"]
 )
 def editar_disciplina(disciplina_id):

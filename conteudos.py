@@ -135,7 +135,7 @@ def criar_conteudo(disciplina_id):
     return render_template("criar_conteudos.html",disciplina=disciplina)
 
 @conteudos_bp.route(
-    "/editar/<int:conteudo_id>",
+    "/editar_conteudo/<int:conteudo_id>",
     methods=["GET", "POST"]
 )
 def editar_conteudo(conteudo_id):

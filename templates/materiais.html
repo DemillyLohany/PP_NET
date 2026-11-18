@@ -33,6 +33,16 @@
     <!-- listar materiais -->
     {% for m in materiais %}
     <div>
+        <a
+            class="botao-editar"
+            href="{{ url_for(
+              'materiais.editar_material',
+              material_id=m.id
+            ) }}"
+          >
+            <i class="fa-solid fa-pen"></i>
+            Editar
+        </a>
         <div>
             <h2>Material - {{ m.titulo }}</h2>
             <a href="{{ m.url }}" target="_blank">{{ m.url }}</a>

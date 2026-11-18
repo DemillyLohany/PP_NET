@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Editar Materiais — N.E.T.
+{% endblock %}
+
+{% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/editar_material.css') }}"
+>
+{% endblock %}
+
+{% block main %}
+<section class="pagina-editar_materiais">
+  <div class="container">
+
+    <div class="caminho-pagina">
+      <a href="{{ url_for('home') }}">
+        Início
+      </a>
+
+      <span>›</span>
+
+      <a href="{{ url_for('materiais.ver_materiais', conteudo_id=material.conteudo_id) }}">
+        Materiais
+      </a>
+
+      <span>›</span>
+
+      <strong>
+        Editar material
+      </strong>
+    </div>
+    
+    {% if erro %}
+        <p class="erro">{{ erro }}</p>
+    {% endif %}
+    
+    <div class="cabecalho-pagina">
+      <h1>editar material</h1>
+    </div>
+
+    <form method="post">
+            <label for="titulo">Título: </label> <input type="text" id="titulo" name="titulo" value="{{material.titulo}}" required>
+            <label for="url">URL: </label> <textarea name="url" id="url" required>{{material.url}}</textarea>
+            <button type="submit">Salvar</button>
+          </form>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script
+  src="{{ url_for('static', filename='js/editar_material.js') }}"
+></script>
+{% endblock %}

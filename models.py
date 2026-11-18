@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone # timezone seria o fuso horário
 
 from sqlmodel import SQLModel, Field, Relationship
 from pydantic import EmailStr
@@ -49,7 +49,9 @@ class Conteudo(SQLModel, table=True):
     autor: Optional[Usuario] = Relationship(back_populates="conteudos")
 
     # quando este conteudo foi criado (aparece na tela de perfil)
-    criado_em: datetime = Field(default_factory=datetime.now)
+    criado_em: datetime = Field(
+    default_factory=lambda: datetime.now(timezone.utc)
+    )
     
     materiais: List["Material"] = Relationship(back_populates="conteudo")
 
@@ -68,4 +70,6 @@ class Material(SQLModel, table=True):
     # serve para acessar os dados de quem enviou
     autor: Optional[Usuario] = Relationship(back_populates="materiais")
 
-    criado_em: datetime = Field(default_factory=datetime.now)
+    criado_em: datetime = Field(
+    default_factory=lambda: datetime.now(timezone.utc)
+    )
