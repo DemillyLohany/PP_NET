@@ -404,12 +404,20 @@
   min-height: 400px;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .exibir-not{
   background-color: #dfddd8;
   color: #dfddd8;
-  height: 250px;
-  
+  min-height: 250px;
+  width: 1200px;
+  margin-right: 30px;
+}
 
+.div-botoes{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
