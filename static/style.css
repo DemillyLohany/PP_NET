@@ -38,10 +38,3 @@ main{min-height:600px}
 h1,h2,h3,h4,p
     {margin-top:0}
 
-.janela-flutuante{
-    display: none;
-    position: fixed;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
