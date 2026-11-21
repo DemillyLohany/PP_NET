@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, sessio
 from sqlmodel import Session, select
 
 from database import engine
-from models import Disciplina, Conteudo
+from models import Disciplina, Conteudo, Material
 
 
 conteudos_bp = Blueprint("conteudos", __name__)
@@ -82,6 +82,16 @@ def excluir_conteudo(conteudo_id):
             return "Conteúdo não encontrado.", 404
 
         disciplina_id = conteudo_atual.disciplina_id
+
+        materiais = banco.exec(
+            select(Material).where(
+                Material.conteudo_id == conteudo_id
+            )
+        ).all()
+
+        for material in materiais:
+            banco.delete(material)
+            
         banco.delete(conteudo_atual)
         banco.commit()
 
