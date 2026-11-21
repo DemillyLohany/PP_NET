@@ -37,26 +37,33 @@ def criar():
 
 @disciplinas_bp.route("/criar", methods=["POST"])
 def criar_disciplina():
-    nome = request.form.get("nome", "").strip()
-    descricao = request.form.get("descricao", "").strip()
+    nome = request.form.get("nome_disciplinas", "").strip()
+    descricao = request.form.get("descricao_disciplinas", "").strip()
 
-    if not nome or not descricao:
-        return render_template(
-            "criar_disciplina.html",
-            erro="Preencha o nome e a descrição.",
+    with Session(engine) as banco:
+        if not nome:
+            lista_disciplinas = banco.exec(select(Disciplina)).all()
+
+            return render_template(
+                "disciplinas.html",
+                # erro="Preencha o nome.",
+                # nome=nome,
+                # descricao=descricao
+                lista_disciplinas=lista_disciplinas,
+                termo = "",
+                erro = "Digite o nome da disciplina"
+            ), 400
+
+        nova_disciplina = Disciplina(
             nome=nome,
             descricao=descricao
-        ), 400
+        )
 
-    nova_disciplina = Disciplina(
-        nome=nome,
-        descricao=descricao
-    )
-
-    with Session(engine) as session:
-        session.add(nova_disciplina)
-        session.commit()
-
+        # with Session(engine) as session:
+        #     session.add(nova_disciplina)
+        #     session.commit()
+        banco.add(nova_disciplina)
+        banco.commit()
     return redirect(url_for("disciplinas.disciplinas"))
 
 

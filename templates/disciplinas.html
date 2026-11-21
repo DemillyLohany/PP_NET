@@ -127,8 +127,8 @@
             <button type="button" id="fechar-janela">X</button>
           </div>  
           <form action="{{url_for('disciplinas.criar_disciplina')}}" method="post">
-            <label for="nome">Nome: </label> <input type="text" id="nome" name="nome">
-            <label for="descricao">Descrição: </label> <textarea name="descricao" id="descricao"></textarea>
+            <label for="nome">Nome: <input name="nome_disciplinas" required placeholder="Ex.: PSI"> </label>
+            <label for="descricao">Descrição: <textarea name="descricao_disciplinas" placeholder="Digite uma breve descrição"></textarea></label>
             <button type="submit" class="botao-criar-disciplina">Criar disciplina</button>
           </form>
         </div>
