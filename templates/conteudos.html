@@ -26,7 +26,7 @@
       <p class="mensagem-erro">{{ erro }}</p>
     {% endif %}
 
-    <div class="formulario-conteudo">
+    <!-- <div class="formulario-conteudo">
       <h2>Criar conteúdo</h2>
       <form method="POST" action="{{ url_for('conteudos.conteudo', disciplina_id=disciplina.id) }}">
         <label>
@@ -39,6 +39,17 @@
         </label>
         <button class="botao-criar" type="submit">Salvar conteúdo</button>
       </form>
+    </div> -->
+
+    <div class="acoes-pagina">
+      <button
+        class="botao-criar"
+        id="abrir-janela" 
+        type="button"
+      >
+        <i class="fa-solid fa-plus"></i>
+        Criar conteúdo
+      </button>
     </div>
 
     <div class="lista-disciplinas">
@@ -80,7 +91,26 @@
       {% else %}
         <p>Nenhum conteúdo cadastrado para esta disciplina ainda.</p>
       {% endfor %}
+      <div class="janela-flutuante" id="janela-flutuante">
+        <div class="caixa-janela">
+          <div class="cabecalho-janela">
+            <h2>Crie o conteúdo aqui!</h2>
+            <button type="button" id="fechar-janela">X</button>
+          </div>  
+          <form action="{{url_for('conteudos.criar_conteudo', disciplina_id=disciplina.id)}}" method="post">
+            <label for="titulo">Título do conteúdo: <input type="text" id="titulo"  name="titulo" required placeholder="Ex.: Introdução ao Flask"></label>
+            <label for="descricao">Descrição: <textarea id="descricao" name="descricao" placeholder="Digite uma breve descrição"></textarea></label>
+            <button type="submit" class="botao-criar-disciplina">Criar conteúdo</button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+{% endblock %}
+
+{% block scripts %}
+<script
+  src="{{ url_for('static', filename='js/disciplinas.js') }}"
+></script>
 {% endblock %}
