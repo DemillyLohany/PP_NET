@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 
+{% block title %}
+  Materiais — N.E.T.
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/disciplinas.css') }}">
+{% endblock %}
+
 {% block main %}
 <hr>
 
@@ -19,7 +27,7 @@
         {% endif %}
     </h2>
     <hr>
-    <div>
+    <div >
         <h4>[Modo Edição] Adicionar Material a este Conteúdo</h4>
         <form action="{{ url_for('materiais.adicionar_material', conteudo_id=conteudo.id) }}" method="POST">
             <input type="text" name="titulo" placeholder="Título do Material" required>
@@ -31,29 +39,33 @@
     <hr>
 
     <!-- listar materiais -->
-    {% for m in materiais %}
-    <div>
-        <a
-            class="botao-editar"
-            href="{{ url_for(
-              'materiais.editar_material',
-              material_id=m.id
-            ) }}"
-          >
-            <i class="fa-solid fa-pen"></i>
-            Editar
-        </a>
-        <div>
-            <h2>Material - {{ m.titulo }}</h2>
-            <a href="{{ m.url }}" target="_blank">{{ m.url }}</a>
-        </div>
-        <form action="{{ url_for('materiais.excluir_material', material_id=m.id) }}" method="POST">
-            <button type="submit">Excluir material</button>
-        </form>
+    <div class="lista-disciplinas">
+        {% for m in materiais %}
+        <article class="card-disciplina">
+            <div class="topo-card">
+                <a
+                    class="botao-editar"
+                    href="{{ url_for(
+                    'materiais.editar_material',
+                    material_id=m.id
+                    ) }}"
+                >
+                    <i class="fa-solid fa-pen"></i>
+                    
+                </a>
+                <div>
+                    <h2>Material - {{ m.titulo }}</h2>
+                    <a href="{{ m.url }}" target="_blank">{{ m.url }}</a>
+                </div>
+                <form action="{{ url_for('materiais.excluir_material', material_id=m.id) }}" method="POST">
+                    <button type="submit">Excluir material</button>
+                </form>
+            </div>
+        </article>
+        {% else %}
+            <p>Nenhum material anexado a este conteúdo ainda.</p>
+        {% endfor %}
     </div>
-    {% else %}
-        <p>Nenhum material anexado a este conteúdo ainda.</p>
-    {% endfor %}
 
 {% else %}
     <p>Conteúdo não encontrado.</p>
