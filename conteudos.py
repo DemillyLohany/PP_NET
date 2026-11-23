@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, sessio
 from sqlmodel import Session, select
 
 from database import engine
-from models import Disciplina, Conteudo
+from models import Disciplina, Conteudo, Material
 
 
 conteudos_bp = Blueprint("conteudos", __name__)
@@ -82,6 +82,16 @@ def excluir_conteudo(conteudo_id):
             return "Conteúdo não encontrado.", 404
 
         disciplina_id = conteudo_atual.disciplina_id
+
+        materiais = banco.exec(
+            select(Material).where(
+                Material.conteudo_id == conteudo_id
+            )
+        ).all()
+
+        for material in materiais:
+            banco.delete(material)
+
         banco.delete(conteudo_atual)
         banco.commit()
 
@@ -93,47 +103,49 @@ def excluir_conteudo(conteudo_id):
     )
 
 
-@conteudos_bp.route("/criar")
-def criar():
-    return render_template("criar_conteudos.html")
+# @conteudos_bp.route("/criar")
+# def criar():
+#     return render_template("conteudos.html")
 
 @conteudos_bp.route("/criar/<int:disciplina_id>", methods=["POST"])
 def criar_conteudo(disciplina_id):
-    titulo = request.form.get("titulo", "").strip()
-    descricao = request.form.get("descricao", "").strip()
     with Session(engine) as banco:
         disciplina = banco.get(Disciplina, disciplina_id)
 
         if disciplina is None:
             return "Disciplina não encontrada.", 404
+            
+        titulo = request.form.get("titulo", "").strip()
+        descricao = request.form.get("descricao", "").strip()
 
-        if request.method == "POST":
-            titulo = request.form.get("titulo", "").strip()
-            descricao = request.form.get("descricao", "").strip()
+        if not titulo:
+            lista_conteudos = banco.exec(select(Conteudo).where(
+                Conteudo.disciplina_id == disciplina_id
+                )
+            ).all()
 
-            if not titulo or not descricao:
-                return render_template(
-                    "criar_conteudo.html",
-                    disciplina=disciplina,
-                    erro="Preencha o titulo e a descrição.",
-                    titulo=titulo,
-                    descricao=descricao
+            return render_template(
+                "conteudos.html",
+                disciplina=disciplina,
+                conteudos = lista_conteudos,
+                erro="Preencha o titulo.",
+                titulo=titulo,
+                descricao=descricao
                 ), 400
 
-            novo_conteudo = Conteudo(
-                titulo=titulo,
-                descricao=descricao,
-                disciplina_id=disciplina_id,
-                # guarda quem criou, para aparecer nas contribuições do perfil
-                autor_id=session.get("usuario_id")
-            )
+        novo_conteudo = Conteudo(
+                        titulo=titulo,
+                        descricao=descricao,
+                        disciplina_id=disciplina_id,
+                        # guarda quem criou, para aparecer nas contribuições do perfil
+                        autor_id=session.get("usuario_id")
+                    )
+            
+        banco.add(novo_conteudo)
+        banco.commit()
 
-            banco.add(novo_conteudo)
-            banco.commit()
-
-            return redirect(url_for("conteudos.conteudo",disciplina_id=disciplina_id))
-    return render_template("criar_conteudos.html",disciplina=disciplina)
-
+    return redirect(url_for("conteudos.conteudo",disciplina_id=disciplina_id))
+    
 @conteudos_bp.route(
     "/editar_conteudo/<int:conteudo_id>",
     methods=["GET", "POST"]

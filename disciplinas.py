@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from sqlmodel import Session, select
 
 from database import engine
-from models import Disciplina
+from models import Disciplina, Conteudo, Material
 
 
 disciplinas_bp = Blueprint("disciplinas", __name__, url_prefix="/disciplinas")
@@ -37,26 +37,33 @@ def criar():
 
 @disciplinas_bp.route("/criar", methods=["POST"])
 def criar_disciplina():
-    nome = request.form.get("nome", "").strip()
-    descricao = request.form.get("descricao", "").strip()
+    nome = request.form.get("nome_disciplinas", "").strip()
+    descricao = request.form.get("descricao_disciplinas", "").strip()
 
-    if not nome or not descricao:
-        return render_template(
-            "criar_disciplina.html",
-            erro="Preencha o nome e a descrição.",
+    with Session(engine) as banco:
+        if not nome:
+            lista_disciplinas = banco.exec(select(Disciplina)).all()
+
+            return render_template(
+                "disciplinas.html",
+                # erro="Preencha o nome.",
+                # nome=nome,
+                # descricao=descricao
+                lista_disciplinas=lista_disciplinas,
+                termo = "",
+                erro = "Digite o nome da disciplina"
+            ), 400
+
+        nova_disciplina = Disciplina(
             nome=nome,
             descricao=descricao
-        ), 400
+        )
 
-    nova_disciplina = Disciplina(
-        nome=nome,
-        descricao=descricao
-    )
-
-    with Session(engine) as session:
-        session.add(nova_disciplina)
-        session.commit()
-
+        # with Session(engine) as session:
+        #     session.add(nova_disciplina)
+        #     session.commit()
+        banco.add(nova_disciplina)
+        banco.commit()
     return redirect(url_for("disciplinas.disciplinas"))
 
 
@@ -106,7 +113,30 @@ def excluir_disciplina(disciplina_id):
         if disciplina is None:
             return "Disciplina não encontrada", 404
 
+        # session.delete(disciplina)
+        # session.commit()
+
+        conteudos = session.exec(
+            select(Conteudo).where(
+                Conteudo.disciplina_id == disciplina_id
+            )
+        ).all()
+
+        conteudo_ids = [conteudo.id for conteudo in conteudos]
+
+        if conteudo_ids:
+            materiais = session.exec(
+                select(Material).where(
+                    Material.conteudo_id.in_(conteudo_ids)
+                )
+            ).all()
+            for material in materiais:
+                session.delete(material)
+        for conteudo in conteudos:
+            session.delete(conteudo)
+
         session.delete(disciplina)
+
         session.commit()
 
     return redirect(url_for("disciplinas.disciplinas"))
