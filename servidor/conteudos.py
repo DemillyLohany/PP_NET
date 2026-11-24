@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, request, session
 from sqlmodel import Session, select
 
-from database import engine
-from models import Disciplina, Conteudo, Material
+from servidor.database import engine
+from servidor.models import Disciplina, Conteudo, Material
 
 
 conteudos_bp = Blueprint("conteudos", __name__)
@@ -16,7 +16,7 @@ def conteudos():
 
 @conteudos_bp.route("/conteudo/<int:disciplina_id>", methods=["GET", "POST"])
 def conteudo(disciplina_id):
-    # o banco se chama "banco" para não confundir com a sessão do Flask
+# o banco se chama "banco" para não confundir com a sessão do Flask
     with Session(engine) as banco:
         disciplina = banco.get(Disciplina, disciplina_id)
 
@@ -43,7 +43,7 @@ def conteudo(disciplina_id):
                 titulo=titulo,
                 descricao=descricao,
                 disciplina_id=disciplina_id,
-                # guarda quem criou, para aparecer nas contribuições do perfil
+# guarda quem criou, para aparecer nas contribuições do perfil
                 autor_id=session.get("usuario_id")
             )
 
@@ -105,7 +105,7 @@ def excluir_conteudo(conteudo_id):
 
 # @conteudos_bp.route("/criar")
 # def criar():
-#     return render_template("conteudos.html")
+# return render_template("conteudos.html")
 
 @conteudos_bp.route("/criar/<int:disciplina_id>", methods=["POST"])
 def criar_conteudo(disciplina_id):
@@ -137,7 +137,7 @@ def criar_conteudo(disciplina_id):
                         titulo=titulo,
                         descricao=descricao,
                         disciplina_id=disciplina_id,
-                        # guarda quem criou, para aparecer nas contribuições do perfil
+# guarda quem criou, para aparecer nas contribuições do perfil
                         autor_id=session.get("usuario_id")
                     )
             

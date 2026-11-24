@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block main %}
+  {% if pessoa %}<p class="container saudacao-home">{% set partes_nome = (pessoa.nome or '').split() %}{% if partes_nome %}Olá, {{ partes_nome[0] }}{% if partes_nome|length > 1 %} {{ partes_nome[-1] }}{% endif %}{% else %}Olá{% endif %}!</p>{% endif %}
 
   <section class="bloco-inicial container">
     <div class="texto-inicial">
@@ -22,11 +23,11 @@
       </p>
 
       <div class="acoes-iniciais">
-        <a class="botao-azul" href="{{ url_for('conteudos.conteudos') }}">
-          Explorar materiais
+        <a class="botao-azul" href="{{ url_for('disciplinas.disciplinas') }}">
+          Explorar disciplinas
         </a>
 
-        <a class="link-simples entrar-suap" href="#">
+        <a class="link-simples entrar-suap" href="{{ url_for('perfil.entrar') }}">
           Faça parte do N.E.T.
         </a>
       </div>
@@ -40,37 +41,6 @@
     </div>
   </section>
 
-  <section class="bloco-atalhos container">
-    <article class="atalho">
-      <h2 class="titulo-atalho atalho-laranja">Junte-se a nós!</h2>
-
-      <div class="corpo-atalho">
-        <p>
-          Aqui você pode construir as melhores soluções para te ajudar a estudar
-          no curso de programação com mais segurança.
-        </p>
-
-        <a class="botao-azul" href="{{ url_for('conteudos.conteudos') }}">
-          Contribuir acervo
-        </a>
-      </div>
-    </article>
-
-    <article class="atalho">
-      <h2 class="titulo-atalho atalho-azul">Dúvidas sobre o curso?</h2>
-
-      <div class="corpo-atalho">
-        <p>
-          Acesse materiais que tirem uma dúvida geral sobre o curso.
-          Se quiser consultar, acesse:
-        </p>
-
-        <a class="botao-laranja" href="{{ url_for('disciplinas.disciplinas') }}">
-          consulta
-        </a>
-      </div>
-    </article>
-  </section>
 
   <section class="bloco-porque">
     <div class="conteudo-porque container">
@@ -104,7 +74,7 @@
     </div>
   </section>
 
-  <section class="bloco-acervo container">
+  <section id="acervo" class="bloco-acervo container">
     <div class="cabecalho-acervo">
       <span class="etiqueta">uma prévia do acervo</span>
 
@@ -156,7 +126,7 @@
     </div>
   </section>
 
-  <section class="bloco-como-funciona">
+  <section id="como-funciona" class="bloco-como-funciona">
     <div class="conteudo-faixa container">
       <div class="lado-texto lado-claro">
         <span class="etiqueta">como funciona</span>
@@ -215,27 +185,10 @@
       mais claro para quem vem depois.
     </p>
 
-    <a class="botao-azul botao-final entrar-suap" href="#">
+    <a class="botao-azul botao-final entrar-suap" href="{{ url_for('perfil.entrar') }}">
       Quero fazer parte
     </a>
   </section>
 
 {% endblock %}
 
-<!-- integrar com o SUAP -->
-{% block scripts %}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="{{ url_for('static', filename='js.cookie.js') }}"></script>
-  <script src="{{ url_for('static', filename='settings.js') }}"></script>
-  <script src="{{ url_for('static', filename='client.js') }}"></script>
-
-  <script>
-    var clienteSuap = new SuapClient(SUAP_URL, CLIENT_ID, HOME_URI, REDIRECT_URI, SCOPE);
-    clienteSuap.init();
-
-    $(document).ready(function () {
-      var urlLogin = clienteSuap.getLoginURL();
-      $(".entrar-suap").attr("href", urlLogin);
-    });
-  </script>
-{% endblock %}

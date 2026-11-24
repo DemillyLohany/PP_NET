@@ -1,3 +1,4 @@
 Flask
 SQLModel
 pydantic[email]
+requests

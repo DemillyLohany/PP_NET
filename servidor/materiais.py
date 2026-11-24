@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, request, session
 from sqlmodel import Session, select
 
-from database import engine
-from models import Disciplina, Conteudo, Material
+from servidor.database import engine
+from servidor.models import Disciplina, Conteudo, Material
 
 
 materiais_bp = Blueprint("materiais", __name__)
@@ -52,7 +52,7 @@ def adicionar_material(conteudo_id):
         titulo=titulo,
         url=url,
         conteudo_id=conteudo_id,
-        # guarda quem enviou, para aparecer nas contribuições do perfil
+# guarda quem enviou, para aparecer nas contribuições do perfil
         autor_id=session.get("usuario_id")
     )
 

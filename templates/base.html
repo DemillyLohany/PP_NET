@@ -21,6 +21,12 @@
 <body>
   {% include 'componentes/menu.html' %}
 
+  {% for categoria, mensagem in get_flashed_messages(with_categories=true) %}
+      <div class="aviso-superior" role="alert">
+        {{ mensagem }}
+        {% if categoria == 'permissao' %}<a href="{{ url_for('perfil.entrar') }}">Entrar com SUAP</a>{% endif %}
+      </div>
+    {% endfor %}
   <main>
     {% block main %}
     {% endblock %}
@@ -28,24 +34,9 @@
 
   {% include 'componentes/rodape.html' %}
 
-  <script>
-    var netToken = document.cookie.match(/suapToken=([^;]+)/);
 
-    var netCorpo = new FormData();
-    netCorpo.append("token", netToken ? decodeURIComponent(netToken[1]) : "");
 
-    fetch("/entrar/suap", { method: "POST", body: netCorpo })
-      .then(function (resposta) {
-        return resposta.json();
-      })
-      .then(function (dados) {
-
-        if (dados.novo && document.getElementById("contribuicoes")) {
-          window.location.reload();
-        }
-      });
-  </script>
-
+  <script src="{{ url_for('static', filename='js/pesquisa.js') }}" defer></script>
   {% block scripts %}
   {% endblock %}
 </body>

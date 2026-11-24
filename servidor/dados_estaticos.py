@@ -95,7 +95,7 @@ NOTIFICACOES = {
     ]
 }
 
-#funções auxiliares para buscar dados rapidamente
+# funções auxiliares para buscar dados rapidamente
 
 def buscar_usuario_logado():
     return USUARIO_LOGADO

@@ -38,3 +38,16 @@ main{min-height:600px}
 h1,h2,h3,h4,p
     {margin-top:0}
 
+
+.aviso-superior {
+  width: min(720px, calc(100% - 36px));
+  margin: 16px auto;
+  padding: 14px 18px;
+  border: 1px solid #d96b43;
+  border-radius: 8px;
+  background: #fff0e8;
+  color: #762c16;
+  text-align: center;
+  font-weight: 700;
+}
+.aviso-superior a { text-decoration: underline; }

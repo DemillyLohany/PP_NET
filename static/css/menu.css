@@ -113,3 +113,21 @@
 .botao-entrar-suap:hover {
   background: #30346a;
 }
+.resultados-menu {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  max-height: 300px;
+  overflow: auto;
+  padding: 10px;
+  border: 1px solid var(--linha);
+  border-radius: 8px;
+  background: var(--branco);
+  box-shadow: 0 6px 16px #24275022;
+  font-size: 13px;
+}
+.resultados-menu p { margin: 4px 6px; }
+.resultados-menu a { display: block; padding: 8px 6px; }
+.resultados-menu a:hover, .resultados-menu a:focus-visible { background: var(--fundo); }

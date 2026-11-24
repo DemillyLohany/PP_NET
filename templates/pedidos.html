@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block main %}
+<section class="container">
+  <h1>{{ 'Solicitação' if mensagem else 'Avaliar solicitações' }}</h1>
+  {% if mensagem %}<p>{{ mensagem }}</p>{% endif %}
+  {% for pedido in pedidos %}
+    <article>
+      <h2>{{ pedido.acao }} — {{ pedido.entidade }}</h2>
+      <p>Pedido {{ pedido.id }} — usuário {{ pedido.usuario_id }} — item {{ pedido.alvo_id or 'novo' }}</p>
+      <p>{{ pedido.dados }}</p>
+      <form method="post" action="{{ url_for('avaliar', pedido_id=pedido.id) }}">
+        <button name="decisao" value="aprovar">Aprovar</button>
+        <button name="decisao" value="reprovar">Reprovar</button>
+        <button name="decisao" value="destacar">{{ "Remover destaque" if pedido.destacada else "Destacar" }}</button>
+      </form>
+    </article>
+  {% else %}
+    {% if not mensagem %}<p>Nenhuma solicitação pendente.</p>{% endif %}
+  {% endfor %}
+  <a href="{{ url_for('home') }}">Voltar ao início</a>
+</section>
+{% endblock %}

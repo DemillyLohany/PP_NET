@@ -2,7 +2,7 @@ from copy import deepcopy
 
 from flask import (Blueprint, render_template, request, redirect, url_for, session)
 
-from dados_estaticos import NOTIFICACOES
+from servidor.dados_estaticos import NOTIFICACOES
 
 
 notificacoes_bp = Blueprint("notificacoes", __name__)

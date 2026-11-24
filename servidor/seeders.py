@@ -1,10 +1,10 @@
 from sqlmodel import Session
-from models import Disciplina
-from database import engine
+from servidor.models import Disciplina
+from servidor.database import engine
 
 def seed_disciplinas():
     with Session(engine) as session:
-        #so criar os bagulho
+# so criar os bagulho
         disciplinas = [
             Disciplina(
                 nome="Instalação e Configuração de Servidores",

@@ -5,33 +5,36 @@
 
   <form
     class="pesquisa-menu"
-    action="{{ url_for('disciplinas.disciplinas') }}"
+    action="{{ url_for('pesquisar') }}"
     method="get"
     role="search"
   >
-    <label class="texto-acessivel" for="pesquisa-menu">Pesquisar</label>
+    <label class="texto-acessivel" for="pesquisa-menu">Pesquisar disciplinas, conteúdos e materiais</label>
     <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
     <input
       id="pesquisa-menu"
       name="q"
       type="search"
       value="{{ request.args.get('q', '') }}"
-      placeholder="Procure o que precisa..."
+      placeholder="Pesquisar no acervo"
     >
+    <div id="resultados-menu" class="resultados-menu" hidden></div>
   </form>
 
   <nav class="menu-conteudo" aria-label="Navegação principal">
     <a class="{% if request.endpoint == 'home' %}ativo{% endif %}" href="{{ url_for('home') }}">Início</a>
     <a class="{% if request.endpoint == 'disciplinas.disciplinas' %}ativo{% endif %}" href="{{ url_for('disciplinas.disciplinas') }}">Disciplinas</a>
     <a class="{% if request.endpoint == 'notificacoes.tela_notificacoes' %}ativo{% endif %}" href="{{ url_for('notificacoes.tela_notificacoes') }}">Notificações</a>
+      {% if pessoa %}
     <a class="{% if request.endpoint == 'perfil.exibir_perfil' %}ativo{% endif %}" href="{{ url_for('perfil.exibir_perfil') }}">Perfil</a>
+      {% endif %}
   </nav>
 
-  {% if request.endpoint == 'home' %}
+  {% if request.endpoint == 'home' and not pessoa %}
     <!-- botão de login -->
     <a
       class="botao-entrar-suap entrar-suap"
-      href="#"
+      href="{{ url_for('perfil.entrar') }}"
     >
       Quero participar
     </a>

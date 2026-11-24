@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from sqlmodel import Session, select
 
-from database import engine
-from models import Disciplina, Conteudo, Material
+from servidor.database import engine
+from servidor.models import Disciplina, Conteudo, Material
 
 
 disciplinas_bp = Blueprint("disciplinas", __name__, url_prefix="/disciplinas")
@@ -46,9 +46,9 @@ def criar_disciplina():
 
             return render_template(
                 "disciplinas.html",
-                # erro="Preencha o nome.",
-                # nome=nome,
-                # descricao=descricao
+# erro="Preencha o nome.",
+
+
                 lista_disciplinas=lista_disciplinas,
                 termo = "",
                 erro = "Digite o nome da disciplina"
@@ -59,9 +59,9 @@ def criar_disciplina():
             descricao=descricao
         )
 
-        # with Session(engine) as session:
-        #     session.add(nova_disciplina)
-        #     session.commit()
+
+
+
         banco.add(nova_disciplina)
         banco.commit()
     return redirect(url_for("disciplinas.disciplinas"))
@@ -113,8 +113,8 @@ def excluir_disciplina(disciplina_id):
         if disciplina is None:
             return "Disciplina não encontrada", 404
 
-        # session.delete(disciplina)
-        # session.commit()
+
+
 
         conteudos = session.exec(
             select(Conteudo).where(
