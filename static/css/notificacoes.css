@@ -400,16 +400,31 @@
 
 .div-notificacoes{
   background-color: #ed9864;
-  color: #ed9864;
+  color: #ffffff;
   min-height: 400px;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.titulo-notificacao{
+  display: flex;
+  justify-self: left;
+  min-height: 70px;
+  align-self: center;
+}
+
+.container-not{
+  display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
 }
 
 .exibir-not{
   background-color: #dfddd8;
-  color: #dfddd8;
+  color: black;
   min-height: 250px;
   width: 1200px;
   margin-right: 30px;

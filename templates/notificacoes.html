@@ -30,6 +30,7 @@
 
       <strong>
         Notificações
+      </strong>
     </div>
 
     <div class="cabecalho-pagina">
@@ -40,13 +41,23 @@
 
     </div>
     <div class="div-notificacoes">
-      <div class="exibir-not">
-      
+
+      <div class="titulo-notificacao">
+        <h2>{{dados.autor_alteracao}} {{dados.acao}}</h2>
       </div>
-      <div class="div-botoes">
-        <button class="botoes-not aprovar">Aprovar</button>
-        <button class="botoes-not reprovar">Reprovar</button>
-        <button class="botoes-not destacar">Destacar alterações</button>
+      <div class="container-not">
+        <div class="exibir-not">
+          <h2>{{dados.conteudo_principal.titulo}}</h2>
+          <p>Criado por {{dados.autor_alteracao}}</p>
+          <p>{{dados.conteudo_principal.texto}}</p>
+        </div>
+        <div class="div-botoes">
+          <form method="post">
+            <button type="submit" name="acao" value="aprovar" class="botoes-not aprovar">Aprovar</button>
+            <button type="submit" name="acao" value="reprovar" class="botoes-not reprovar">Reprovar</button>
+            <button type="submit" name="acao" value="destacar" class="botoes-not destacar">Destacar alterações</button>
+          </form>
+        </div>
       </div>
     </div>
   
