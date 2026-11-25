@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block main %}
+  <p id="mensagem" class="aviso-superior" role="alert" hidden></p>
   {% if pessoa %}<p class="container saudacao-home">{% set partes_nome = (pessoa.nome or '').split() %}{% if partes_nome %}Olá, {{ partes_nome[0] }}{% if partes_nome|length > 1 %} {{ partes_nome[-1] }}{% endif %}{% else %}Olá{% endif %}!</p>{% endif %}
 
   <section class="bloco-inicial container">
@@ -94,7 +95,7 @@
         <div class="corpo-cartao">
           <h3>Da primeira tag à primeira página</h3>
           <p>Uma base para entender como a web gira.</p>
-          <a class="link-cartao" href="{{ url_for('conteudos.conteudos') }}">Ver conteúdos</a>
+          <a class="link-cartao" href="{{ url_for('conteudos.conteudos') }}">Ver</a>
         </div>
       </article>
 
@@ -107,7 +108,7 @@
         <div class="corpo-cartao">
           <h3>Raciocínio para resolver problemas</h3>
           <p>Conceitos que acompanham qualquer linguagem.</p>
-          <a class="link-cartao" href="{{ url_for('conteudos.conteudos') }}">Ver conteúdos</a>
+          <a class="link-cartao" href="{{ url_for('conteudos.conteudos') }}">Ver</a>
         </div>
       </article>
 
@@ -120,7 +121,7 @@
         <div class="corpo-cartao">
           <h3>Referências para tirar ideias do papel</h3>
           <p>Descrições e processos para construir com atenção.</p>
-          <a class="link-cartao" href="{{ url_for('conteudos.conteudos') }}">Ver conteúdos</a>
+          <a class="link-cartao" href="{{ url_for('conteudos.conteudos') }}">Ver</a>
         </div>
       </article>
     </div>
@@ -192,3 +193,21 @@
 
 {% endblock %}
 
+
+{% block scripts %}
+  {% if request.args.get("retorno_suap") == "1" %}
+<script>
+  const mensagem = document.getElementById("mensagem");
+  const dados = new URLSearchParams(location.hash.slice(1));
+  const consulta = new URLSearchParams(location.search);
+  const erro = dados.get("error") || consulta.get("error");
+  history.replaceState(null, "", {{ url_for("home") | tojson }});
+  const corpo = erro || !dados.get("access_token")
+    ? new URLSearchParams({falha: "1"})
+    : new URLSearchParams({token: dados.get("access_token"), estado: dados.get("state") || consulta.get("state") || ""});
+  fetch({{ url_for('perfil.confirmar_login') | tojson }}, {method: "POST", body: corpo})
+    .then(() => location.replace({{ url_for('home') | tojson }}))
+    .catch(() => { mensagem.hidden = false; mensagem.textContent = "Não foi possível confirmar o login. Tente novamente."; });
+</script>
+  {% endif %}
+{% endblock %}

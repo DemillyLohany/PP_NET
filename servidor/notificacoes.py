@@ -1,47 +1,42 @@
-from copy import deepcopy
+import json
 
-from flask import (Blueprint, render_template, request, redirect, url_for, session)
+from flask import Blueprint, redirect, render_template, url_for
+from sqlmodel import Session, col, select
 
-from servidor.dados_estaticos import NOTIFICACOES
-
+from servidor.database import engine
+from servidor.models import Disciplina, Conteudo, Material, Solicitacao, Usuario
+from servidor.perfil import usuario_logado
+from servidor.regras import professor
 
 notificacoes_bp = Blueprint("notificacoes", __name__)
 
 
-@notificacoes_bp.route(
-    "/notificacoes",
-    methods=["GET", "POST"]
-)
+@notificacoes_bp.get("/notificacoes")
 def tela_notificacoes():
-    if request.method == "POST":
-        acao = request.form.get("acao")
-
-        if acao == "aprovar":
-            session["status_notificacao"] = "Aprovada"
-
-        elif acao == "reprovar":
-            session["status_notificacao"] = "Reprovada"
-
-        elif acao == "destacar":
-            session["notificacao_destacada"] = True
-
-        return redirect(
-            url_for("notificacoes.tela_notificacoes")
-        )
-
-    dados = deepcopy(NOTIFICACOES)
-
-    dados["status_avaliacao"] = session.get(
-        "status_notificacao",
-        "Aguardando avaliação"
-    )
-
-    dados["destacada"] = session.get(
-        "notificacao_destacada",
-        False
-    )
-
-    return render_template(
-        "notificacoes.html",
-        dados=dados
-    )
+    pessoa = usuario_logado()
+    if pessoa is None:
+        return redirect(url_for("home"))
+    pode_avaliar = professor(pessoa)
+    notificacoes = []
+    if pessoa is not None:
+        with Session(engine) as banco:
+            consulta = select(Solicitacao)
+            if pode_avaliar:
+                consulta = consulta.where(Solicitacao.estado == "Pendente")
+            else:
+                consulta = consulta.where(Solicitacao.usuario_id == pessoa.id)
+            consulta = consulta.order_by(col(Solicitacao.destacada).desc(), col(Solicitacao.id).desc())
+            for pedido in banco.exec(consulta).all():
+                dados = json.loads(pedido.dados)
+                autor = banco.get(Usuario, pedido.usuario_id)
+                modelos = {"Disciplina": Disciplina, "Conteudo": Conteudo, "Material": Material}
+                modelo = modelos.get(pedido.entidade)
+                item = banco.get(modelo, pedido.alvo_id) if modelo is not None and pedido.alvo_id is not None and pedido.acao != "Cadastro" else None
+                titulo = dados.get("titulo") or dados.get("nome") or getattr(item, "titulo", None) or getattr(item, "nome", None)
+                notificacoes.append(dict(
+                    pedido=pedido, autor=autor.nome if autor else "Usuário não disponível",
+                    titulo=titulo,
+                    descricao=dados.get("descricao"), url=dados.get("url"),
+                    pode_decidir=pode_avaliar and pedido.usuario_id != pessoa.id,
+                ))
+    return render_template("notificacoes.html", notificacoes=notificacoes)

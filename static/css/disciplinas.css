@@ -265,3 +265,33 @@
   color: var(--laranja, #ed7d52);
   font-weight: bold;
 } 
+.formulario-editar-disciplina[hidden] { display: none; }
+.formulario-editar-disciplina:not([hidden]) {
+  display: grid;
+  gap: 12px;
+  margin: 16px 0;
+  min-width: 0;
+}
+.formulario-editar-disciplina label { display: grid; gap: 5px; min-width: 0; }
+.formulario-editar-disciplina input,
+.formulario-editar-disciplina textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 9px;
+  border: 1px solid var(--linha);
+  border-radius: 4px;
+  background: var(--branco);
+  color: var(--azul);
+}
+.formulario-editar-disciplina textarea { min-height: 72px; resize: vertical; }
+.acoes-editar-disciplina { display: flex; flex-wrap: wrap; gap: 8px; }
+.acoes-editar-disciplina button {
+  border: 1px solid var(--linha);
+  border-radius: 4px;
+  padding: 8px 12px;
+  background: var(--branco);
+  color: var(--azul);
+}
+.acoes-editar-disciplina button[type="submit"] { background: var(--azul); color: white; }
+
+.card-disciplina::before { display: none; }

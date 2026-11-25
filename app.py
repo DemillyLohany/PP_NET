@@ -1,7 +1,7 @@
 import os
 import secrets
 
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 
 from servidor.conteudos import conteudos_bp
 from servidor.materiais import materiais_bp
@@ -37,7 +37,7 @@ def tela_login():
 def dashboard():
     if usuario_logado() is not None:
         return redirect(url_for("home"))
-    return render_template("dashboard.html")
+    return redirect(url_for("home", retorno_suap=1, error=request.args.get("error"), state=request.args.get("state")))
 
 
 from servidor.regras import registrar_regras, professor

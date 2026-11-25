@@ -10,7 +10,11 @@
   <div class="perfil-conteudo">
     <div class="cartao-perfil">
       <div class="perfil-superior">
-        <img class="avatar-perfil" src="{{ url_for('static', filename='imagens/div_avatar.png') }}" alt="">
+        <img class="avatar-perfil"
+             src="{{ pessoa.foto_url or url_for('static', filename='imagens/div_avatar.png') }}"
+             data-reserva="{{ url_for('static', filename='imagens/div_avatar.png') }}"
+             onerror="this.onerror=null; this.src=this.dataset.reserva"
+             referrerpolicy="no-referrer" alt="Foto do perfil">
         <div class="perfil-campos-principais">
           <label for="vinculo">Você é</label>
           <input id="vinculo" value="{{ pessoa.tipo_vinculo or 'Vínculo não informado' }}" readonly>
@@ -23,7 +27,7 @@
         <input id="email" value="{{ pessoa.email or 'E-mail não informado pelo SUAP' }}" readonly>
       </div>
       <div class="perfil-acoes">
-        {% if pode_avaliar %}<a href="{{ url_for('avaliacoes') }}">Avaliar solicitações</a>{% endif %}
+        {% if pode_avaliar %}<a href="{{ url_for('notificacoes.tela_notificacoes') }}">Avaliar solicitações</a>{% endif %}
         <form method="post" action="{{ url_for('perfil.sair') }}"><button class="botao-sair">Sair</button></form>
       </div>
     </div>

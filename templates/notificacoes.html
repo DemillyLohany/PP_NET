@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/disciplinas.css') }}">
 <link
   rel="stylesheet"
   href="{{ url_for('static', filename='css/notificacoes.css') }}"
@@ -12,11 +13,6 @@
 {% endblock %}
 
 {% block main %}
-
-{% set avaliacao_concluida = dados.status_avaliacao in [
-  'Aprovada',
-  'Reprovada'
-] %}
 
 <section class="pagina-notificacoes">
   <div class="container">
@@ -40,28 +36,61 @@
       </h1>
 
     </div>
-    {% for n in notificacoes %}
-    <div class="div-notificacoes">
+    {% if not pessoa %}
+      <p>Entre com o SUAP para acompanhar suas solicitações.</p>
+    {% endif %}
 
-      <div class="titulo-notificacao">
-        <h2></h2>
-      </div>
-      <div class="container-not">
-        <div class="exibir-not">
-
-        </div>
-        <div class="div-botoes">
-          <form method="post">
-            <button type="submit" name="acao" value="aprovar" class="botoes-not aprovar">Aprovar</button>
-            <button type="submit" name="acao" value="reprovar" class="botoes-not reprovar">Reprovar</button>
-            <button type="submit" name="acao" value="destacar" class="botoes-not destacar">Destacar alterações</button>
-          </form>
-        </div>
-      </div>
-    </div>
+    {% if not pode_avaliar and notificacoes %}
+      <ul class="lista-pedidos-aluno" aria-label="Solicitações enviadas">
+        {% for n in notificacoes %}
+          {% set pedido = n.pedido %}
+          <li>
+            <div>
+              <strong>{{ n.titulo or 'Item não disponível' }}</strong>
+              <small>{{ pedido.acao }} de {{ {'Conteudo': 'conteúdo'}.get(pedido.entidade, pedido.entidade|lower) }}</small>
+            </div>
+            <div class="pedido-aluno-estado">
+              <span>{{ pedido.estado }}</span>
+              <small>Pedido nº {{ pedido.id }} em {{ pedido.criado_em.strftime('%d/%m/%Y') }}</small>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
     {% else %}
-      <p>Nenhuma notificação encontrada</p>
+    {% for n in notificacoes %}
+      {% set pedido = n.pedido %}
+      <article class="retangulo-avaliacao">
+        <div class="topo-avaliacao">
+          <h2>{{ n.titulo or 'Item não disponível' }}</h2>
+        </div>
+        <div class="corpo-avaliacao">
+          <div class="resumo-avaliacao">
+            <p><strong>{{ pedido.acao }} de {{ {'Conteudo': 'conteúdo'}.get(pedido.entidade, pedido.entidade|lower) }}</strong></p>
+            {% if pode_avaliar %}<p>Solicitado por {{ n.autor }}</p>{% endif %}
+            {% if n.descricao and n.descricao|trim != (n.titulo or '')|trim %}<p>{{ n.descricao }}</p>{% endif %}
+            {% if n.url %}<p>{{ n.url }}</p>{% endif %}
+            <p><strong>{{ pedido.estado }}</strong>{% if pedido.destacada %} (em destaque){% endif %}</p>
+            <small>Pedido nº {{ pedido.id }} em {{ pedido.criado_em.strftime('%d/%m/%Y às %H:%M') }}</small>
+          </div>
+          {% if n.pode_decidir %}
+            <div class="acoes-avaliacao">
+              <form method="post" action="{{ url_for('avaliar', pedido_id=pedido.id) }}">
+                <button type="submit" name="decisao" value="aprovar" class="botoes-not aprovar">Aprovar</button>
+                <button type="submit" name="decisao" value="reprovar" class="botoes-not reprovar">Reprovar</button>
+                <button type="submit" name="decisao" value="destacar" class="botoes-not destacar">{{ 'Remover destaque' if pedido.destacada else 'Destacar alterações' }}</button>
+              </form>
+            </div>
+          {% endif %}
+        </div>
+      </article>
+    {% else %}
+      {% if pessoa %}
+        <div class="sem-disciplinas">
+          <p>{{ 'Nenhuma solicitação pendente para avaliar.' if pode_avaliar else 'Você ainda não enviou solicitações.' }}</p>
+        </div>
+      {% endif %}
     {% endfor %}
+    {% endif %}
 
   </div>
 </section>

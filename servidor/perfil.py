@@ -1,9 +1,10 @@
-from flask import flash, Blueprint, jsonify, render_template, request, redirect, url_for, session
+from flask import abort, flash, Blueprint, jsonify, render_template, request, redirect, url_for, session
 from sqlmodel import Session, col, select
 
+import os
 import requests
 import secrets
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urljoin, urlsplit
 
 from servidor.database import engine
 from servidor.models import Conteudo, Material, Usuario, Solicitacao
@@ -14,6 +15,56 @@ perfil_bp = Blueprint("perfil", __name__)
 SUAP_URL = "https://suap.ifrn.edu.br"
 
 
+MATRICULA_TESTE = "net-professor-teste"
+
+
+def teste_local_ativo():
+    chave = os.getenv("NET_CHAVE_TESTE", "")
+    return (len(chave) >= 16 and request.remote_addr in ("127.0.0.1", "::1")
+            and request.host in ("localhost:5000", "127.0.0.1:5000"))
+
+
+def foto_do_suap(dados):
+    vinculo = dados.get("vinculo")
+    for origem in (dados, vinculo if isinstance(vinculo, dict) else {}):
+        for campo in ("foto_url", "url_foto_75x100", "url_foto_150x200", "url_foto", "foto"):
+            valor = origem.get(campo)
+            if not isinstance(valor, str) or not valor.strip():
+                continue
+            try:
+                endereco = urljoin(SUAP_URL + "/", valor.strip())
+                partes = urlsplit(endereco)
+                if partes.scheme == "https" and partes.netloc == "suap.ifrn.edu.br":
+                    return endereco
+            except ValueError:
+                continue
+    return None
+
+
+@perfil_bp.route("/teste-professor", methods=["GET", "POST"])
+def entrar_teste():
+    if not teste_local_ativo():
+        abort(404)
+    if request.method == "POST":
+        chave = request.form.get("chave", "").strip().encode()
+        if not secrets.compare_digest(chave, os.environ["NET_CHAVE_TESTE"].encode()):
+            return render_template("teste_professor.html", erro="Chave de teste incorreta."), 403
+        with Session(engine) as banco:
+            pessoa = banco.exec(select(Usuario).where(Usuario.matricula == MATRICULA_TESTE)).first()
+            if pessoa is None:
+                pessoa = Usuario(matricula=MATRICULA_TESTE, nome="Professor de Teste",
+                                 email="teste@exemplo.com", tipo_vinculo="Professor de teste")
+                banco.add(pessoa)
+                banco.commit()
+                banco.refresh(pessoa)
+            usuario_id = pessoa.id
+        session.clear()
+        session["usuario_id"] = usuario_id
+        session["professor_teste"] = True
+        return redirect(url_for("perfil.exibir_perfil"), code=303)
+    return render_template("teste_professor.html")
+
+
 def usuario_logado():
     """Devolve o usuário que está na sessão, ou None se ninguém entrou."""
     usuario_id = session.get("usuario_id")
@@ -22,7 +73,11 @@ def usuario_logado():
         return None
 
     with Session(engine) as banco:
-        return banco.get(Usuario, usuario_id)
+        pessoa = banco.get(Usuario, usuario_id)
+        if pessoa is not None and pessoa.matricula == MATRICULA_TESTE:
+            if not session.get("professor_teste") or not teste_local_ativo():
+                return None
+        return pessoa
 
 
 def identificar_conta(dados, vinculo):
@@ -63,7 +118,7 @@ def montar_usuario(dados):
     tipo_vinculo = ler_vinculo(dados, vinculo)
     nome = nome or str(vinculo.get("nome") or "").strip()
 
-    if not matricula:
+    if not matricula or matricula == MATRICULA_TESTE:
         raise ValueError("Matrícula não informada")
 
     if not nome:
@@ -91,6 +146,7 @@ def montar_usuario(dados):
             usuario.tipo_vinculo = tipo_vinculo
             banco.add(usuario)
 
+        usuario.foto_url = foto_do_suap(dados) or usuario.foto_url
         banco.commit()
         banco.refresh(usuario)
 

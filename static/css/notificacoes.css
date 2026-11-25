@@ -459,3 +459,18 @@
 .botoes-not.destacar{
   background-color: #08F;
 }
+.lista-pedidos-aluno { list-style: none; padding: 0; margin: 0; max-width: 900px; }
+.lista-pedidos-aluno li { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 18px; padding: 12px 14px; border-bottom: 1px solid var(--linha); background: var(--branco); overflow-wrap: anywhere; }
+.lista-pedidos-aluno small { display: block; margin-top: 4px; color: var(--cinza); }
+.pedido-aluno-estado span { font-weight: 700; }
+
+.retangulo-avaliacao { margin-bottom: 20px; padding: 12px; border-radius: 6px; background: #ed9864; }
+.topo-avaliacao { padding: 7px 8px 13px; color: white; }
+.topo-avaliacao h2 { margin: 0; font-size: 17px; }
+.corpo-avaliacao { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+.resumo-avaliacao { flex: 1 1 260px; min-width: 0; padding: 16px; border-radius: 6px; background: var(--branco); overflow-wrap: anywhere; }
+.resumo-avaliacao p { margin: 0 0 8px; }
+.acoes-avaliacao form { display: grid; gap: 6px; }
+.acoes-avaliacao .botoes-not { width: 136px; min-height: 32px; padding: 6px 10px; border: 0; border-radius: 3px; font-size: 11px; }
+
+.pagina-notificacoes .retangulo-avaliacao { box-sizing: border-box; width: 100%; max-width: 1100px; margin: 0 auto 20px; }

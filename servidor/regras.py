@@ -3,12 +3,13 @@ import os
 from datetime import datetime, timezone
 from urllib.parse import urlsplit
 
-from flask import flash, abort, g, redirect, render_template, request, url_for
+from flask import session, flash, abort, g, redirect, render_template, request, url_for
 from sqlmodel import Session, col, select
+from werkzeug.exceptions import Conflict
 
 from servidor.database import engine
 from servidor.models import Conteudo, Disciplina, Material, Solicitacao
-from servidor.perfil import usuario_logado
+from servidor.perfil import MATRICULA_TESTE, teste_local_ativo, usuario_logado
 
 # as telas do acervo continuam iguais. A regra é aplicada antes de gravar.
 rotas = {
@@ -26,6 +27,8 @@ rotas = {
 modelos = {c.__name__: c for c in (Disciplina, Conteudo, Material)}
 
 def professor(pessoa):
+    if pessoa and pessoa.matricula == MATRICULA_TESTE:
+        return bool(session.get("professor_teste") and teste_local_ativo())
 
 # só professores da lista podem aprovar
     matriculas = os.getenv("NET_PROFESSORES", "").split(",")
@@ -47,15 +50,15 @@ def aplicar(banco, pedido):
             abort(409, "O item não existe mais.")
         if pedido.acao == "Exclusão":
             if getattr(item, "conteudos", None) or getattr(item, "materiais", None):
-                abort(409, "Retire os itens vinculados antes de excluir.")
+                abort(409, "Não foi possível excluir este item: ele ainda tem conteúdos ou materiais vinculados.")
             banco.delete(item)
         else:
             for campo, valor in dados.items():
                 setattr(item, campo, valor)
 
 def registrar_regras(app):
-    def voltar_com_aviso(mensagem):
-        flash(mensagem, "validacao")
+    def voltar_com_aviso(mensagem, categoria="validacao"):
+        flash(mensagem, categoria)
         origem = urlsplit(request.host_url)
         anterior = urlsplit(request.referrer or "")
         if (anterior.scheme, anterior.netloc) == (origem.scheme, origem.netloc):
@@ -74,6 +77,13 @@ def registrar_regras(app):
         else:
             destino = url_for("disciplinas.disciplinas")
         return redirect(destino, code=303)
+
+    @app.errorhandler(Conflict)
+    def mostrar_conflito(erro):
+        if request.endpoint == "avaliar":
+            flash(erro.description, "validacao")
+            return redirect(url_for("notificacoes.tela_notificacoes"), code=303)
+        return voltar_com_aviso(erro.description, "validacao")
 
     @app.before_request
     def checar_alteracao():
@@ -116,23 +126,25 @@ def registrar_regras(app):
             pedido = Solicitacao(usuario_id=pessoa.id, entidade=modelo.__name__, acao=acao,
                                   alvo_id=alvo, dados=json.dumps(dados, ensure_ascii=False))
             if professor(pessoa):
-                aplicar(banco, pedido)
+                try:
+                    aplicar(banco, pedido)
+                except Conflict as erro:
+                    banco.rollback()
+                    return voltar_com_aviso(erro.description or "Não foi possível aplicar a alteração.")
                 pedido.estado = "Aprovada"
                 pedido.avaliador_id = pessoa.id
                 pedido.avaliado_em = datetime.now(timezone.utc)
             banco.add(pedido)
             banco.commit()
         if professor(pessoa):
-            return render_template("pedidos.html", mensagem="Alteração aplicada.", pedidos=[])
-        return render_template("pedidos.html", mensagem="Pedido enviado para avaliação.", pedidos=[]), 202
+            return voltar_com_aviso("Alteração aplicada.", "sucesso")
+        return voltar_com_aviso("Solicitação enviada para avaliação.", "sucesso")
 
     @app.get("/avaliacoes")
     def avaliacoes():
         if not professor(usuario_logado()):
             abort(403)
-        with Session(engine) as banco:
-            pedidos = banco.exec(select(Solicitacao).where(Solicitacao.estado == "Pendente").order_by(col(Solicitacao.destacada).desc(), col(Solicitacao.id))).all()
-        return render_template("pedidos.html", pedidos=pedidos)
+        return redirect(url_for("notificacoes.tela_notificacoes"))
 
     @app.post("/avaliacoes/<int:pedido_id>")
     def avaliar(pedido_id):
@@ -152,13 +164,19 @@ def registrar_regras(app):
                     abort(409)
                 pedido.destacada = not pedido.destacada
                 banco.commit()
-                return redirect(url_for("avaliacoes"))
+                return redirect(url_for("notificacoes.tela_notificacoes"), code=303)
             if pedido.estado != "Pendente" or pedido.usuario_id == pessoa.id:
                 abort(409, "Pedido já avaliado ou feito pela sua própria conta.")
             if decisao == "aprovar":
-                aplicar(banco, pedido)
+                try:
+                    aplicar(banco, pedido)
+                except Conflict as erro:
+                    banco.rollback()
+                    mensagem = erro.description or "Não foi possível aplicar a alteração."
+                    flash(mensagem, "validacao")
+                    return redirect(url_for("notificacoes.tela_notificacoes"), code=303)
             pedido.estado = "Aprovada" if decisao == "aprovar" else "Reprovada"
             pedido.avaliador_id = pessoa.id
             pedido.avaliado_em = datetime.now(timezone.utc)
             banco.commit()
-        return redirect(url_for("avaliacoes"))
+        return redirect(url_for("notificacoes.tela_notificacoes"), code=303)

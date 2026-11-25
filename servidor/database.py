@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel,create_engine,Session  # importa as coisinhas do sqlmodel
-from models import Usuario,Conteudo,Disciplina,Material  # importa as classes que estão em models.py, ou seja, do banco
+from servidor.models import Usuario, Conteudo, Disciplina, Material # importa as classes que estão em models.py, ou seja, do banco
 
 from pathlib import Path
 

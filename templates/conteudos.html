@@ -60,36 +60,34 @@
             {{ "%02d"|format(loop.index) }}
           </span>
 
-          <a
-            class="botao-editar"
-            href="{{ url_for(
-              'conteudos.editar_conteudo',
-              conteudo_id=c.id
-            ) }}"
-          >
-            <i class="fa-solid fa-pen"></i>
-            Editar
-          </a>
+          <button type="button" class="botao-editar" data-editar="editar-conteudo-{{ c.id }}" aria-expanded="false">Editar</button>
         </div>
         <div class="topo-card">
           <span class="numero-disciplina">{{ "%02d"|format(loop.index) }}</span>
           <span class="etiqueta">conteúdo</span>
         </div>
-        <h2>
-          <a href="{{ url_for('materiais.ver_materiais', conteudo_id=c.id) }}">
-            {{ c.titulo }}
-          </a>
-        </h2>
-        <p>{{ c.descricao or 'Sem descrição cadastrada.' }}</p>
+        <div data-dados-disciplina>
+          <h2>{{ c.titulo }}</h2>
+          <p>{{ c.descricao or 'Sem descrição cadastrada.' }}</p>
+        </div>
+        <form class="formulario-editar-disciplina" id="editar-conteudo-{{ c.id }}" method="post"
+              action="{{ url_for('conteudos.editar_conteudo', conteudo_id=c.id) }}" hidden>
+          <label>Título <input name="titulo" value="{{ c.titulo }}" required></label>
+          <label>Descrição <textarea name="descricao">{{ c.descricao or '' }}</textarea></label>
+          <div class="acoes-editar-disciplina">
+            <button type="submit">Salvar</button>
+            <button type="button" data-editar="editar-conteudo-{{ c.id }}">Cancelar</button>
+          </div>
+        </form>
         <div class="rodape-card">
-          <span>Materiais de estudo</span>
+          <a class="botao-acessar" href="{{ url_for('materiais.ver_materiais', conteudo_id=c.id) }}">Ver materiais</a>
           <form method="POST" action="{{ url_for('conteudos.excluir_conteudo', conteudo_id=c.id) }}">
             <button class="botao-excluir" type="submit">Excluir</button>
           </form>
         </div>
       </article>
       {% else %}
-        <p>Nenhum conteúdo cadastrado para esta disciplina ainda.</p>
+        <div class="sem-disciplinas"><p>Nenhum conteúdo cadastrado para esta disciplina.</p></div>
       {% endfor %}
       <div class="janela-flutuante" id="janela-flutuante">
         <div class="caixa-janela">

@@ -1,74 +1,76 @@
 {% extends 'base.html' %}
-
-{% block title %}
-  Materiais — N.E.T.
-{% endblock %}
-
+{% block title %}Materiais — N.E.T.{% endblock %}
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/disciplinas.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/materiais.css') }}">
 {% endblock %}
-
 {% block main %}
-<hr>
-
-{% if conteudo %}
-    <!-- link para voltar para a lista de conteúdos -->
-    <p>
-        <a href="{{ url_for('conteudos.conteudo', disciplina_id=conteudo.disciplina_id) }}">← Voltar para Conteúdos</a>
-    </p>
-
-    <hr>
-    <!-- título no formato: Nome da Disciplina > Nome do Conteúdo -->
-    <h2>
-        {% if disciplina %}
-            {{ disciplina.nome }} &gt; {{ conteudo.titulo }}
-        {% else %}
-            {{ conteudo.titulo }}
-        {% endif %}
-    </h2>
-    <hr>
-    <div >
-        <h4>[Modo Edição] Adicionar Material a este Conteúdo</h4>
-        <form action="{{ url_for('materiais.adicionar_material', conteudo_id=conteudo.id) }}" method="POST">
-            <input type="text" name="titulo" placeholder="Título do Material" required>
-            <input type="text" name="url" placeholder="URL do Material" required>
-            <button type="submit">Anexar Material</button>
+<section class="pagina-disciplinas pagina-materiais">
+  <div class="container">
+    <nav class="caminho-pagina" aria-label="Caminho da página">
+      <a href="{{ url_for('home') }}">Início</a> ›
+      <a href="{{ url_for('conteudos.conteudo', disciplina_id=conteudo.disciplina_id) }}">Conteúdos</a> ›
+      <strong>Materiais</strong>
+    </nav>
+    <div class="cabecalho-pagina">
+      <h1>Materiais</h1>
+      <p>{{ conteudo.titulo }}</p>
+    </div>
+    <div class="acoes-pagina">
+      <button class="botao-criar" id="abrir-janela" type="button">
+        <i class="fa-solid fa-plus" aria-hidden="true"></i> Adicionar material
+      </button>
+    </div>
+    <div class="janela-flutuante" id="janela-flutuante">
+      <div class="caixa-janela">
+        <div class="cabecalho-janela">
+          <h2>Adicionar material</h2>
+          <button type="button" id="fechar-janela" aria-label="Fechar">X</button>
+        </div>
+        <form action="{{ url_for('materiais.adicionar_material', conteudo_id=conteudo.id) }}" method="post">
+          <label for="titulo-material">Título do material:
+            <input id="titulo-material" name="titulo" placeholder="Digite o título" required>
+          </label>
+          <label for="url-material">Link:
+            <input id="url-material" name="url" placeholder="https://..." required>
+          </label>
+          <button type="submit" class="botao-criar-disciplina">Adicionar material</button>
         </form>
+      </div>
     </div>
-
-    <hr>
-
-    <!-- listar materiais -->
     <div class="lista-disciplinas">
-        {% for m in materiais %}
+      {% for m in materiais %}
         <article class="card-disciplina">
-            <div class="topo-card">
-                <a
-                    class="botao-editar"
-                    href="{{ url_for(
-                    'materiais.editar_material',
-                    material_id=m.id
-                    ) }}"
-                >
-                    <i class="fa-solid fa-pen"></i>
-                    
-                </a>
-                <div>
-                    <h2>Material - {{ m.titulo }}</h2>
-                    <a href="{{ m.url }}" target="_blank">{{ m.url }}</a>
-                </div>
-                <form action="{{ url_for('materiais.excluir_material', material_id=m.id) }}" method="POST">
-                    <button type="submit">Excluir material</button>
-                </form>
+          <div class="topo-card">
+            <span class="etiqueta">Material</span>
+            <button type="button" class="botao-editar" data-editar="editar-material-{{ m.id }}" aria-expanded="false">Editar</button>
+          </div>
+          <div data-dados-disciplina>
+            <h2>{{ m.titulo }}</h2>
+            {% if m.url and (m.url.startswith('https://') or m.url.startswith('http://')) %}
+              <a class="link-material" href="{{ m.url }}" target="_blank" rel="noopener noreferrer">Abrir material ↗</a>
+            {% endif %}
+          </div>
+          <form class="formulario-editar-disciplina" id="editar-material-{{ m.id }}" method="post"
+                action="{{ url_for('materiais.editar_material', material_id=m.id) }}" hidden>
+            <label>Título <input name="titulo" value="{{ m.titulo }}" required></label>
+            <label>Link <input name="url" value="{{ m.url }}" required></label>
+            <div class="acoes-editar-disciplina">
+              <button type="submit">Salvar</button>
+              <button type="button" data-editar="editar-material-{{ m.id }}">Cancelar</button>
             </div>
+          </form>
+          <form class="formulario-excluir" action="{{ url_for('materiais.excluir_material', material_id=m.id) }}" method="post">
+            <button type="submit">Excluir material</button>
+          </form>
         </article>
-        {% else %}
-            <p>Nenhum material anexado a este conteúdo ainda.</p>
-        {% endfor %}
+      {% else %}
+        <div class="sem-disciplinas"><p>Nenhum material cadastrado para este conteúdo.</p></div>
+      {% endfor %}
     </div>
-
-{% else %}
-    <p>Conteúdo não encontrado.</p>
-{% endif %}
-
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/disciplinas.js') }}"></script>
 {% endblock %}

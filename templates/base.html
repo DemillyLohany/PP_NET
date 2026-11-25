@@ -22,7 +22,7 @@
   {% include 'componentes/menu.html' %}
 
   {% for categoria, mensagem in get_flashed_messages(with_categories=true) %}
-      <div class="aviso-superior" role="alert">
+      <div class="aviso-superior{% if categoria == 'sucesso' %} aviso-confirmacao{% endif %}" role="{{ 'status' if categoria == 'sucesso' else 'alert' }}">
         {{ mensagem }}
         {% if categoria == 'permissao' %}<a href="{{ url_for('perfil.entrar') }}">Entrar com SUAP</a>{% endif %}
       </div>

@@ -2,3 +2,5 @@ Flask
 SQLModel
 pydantic[email]
 requests
+
+#criar disciplinas: python -m servidor.seeders
