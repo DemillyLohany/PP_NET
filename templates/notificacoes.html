@@ -40,16 +40,15 @@
       </h1>
 
     </div>
+    {% for n in notificacoes %}
     <div class="div-notificacoes">
 
       <div class="titulo-notificacao">
-        <h2>{{dados.autor_alteracao}} {{dados.acao}}</h2>
+        <h2></h2>
       </div>
       <div class="container-not">
         <div class="exibir-not">
-          <h2>{{dados.conteudo_principal.titulo}}</h2>
-          <p>Criado por {{dados.autor_alteracao}}</p>
-          <p>{{dados.conteudo_principal.texto}}</p>
+
         </div>
         <div class="div-botoes">
           <form method="post">
@@ -60,7 +59,9 @@
         </div>
       </div>
     </div>
-  
+    {% else %}
+      <p>Nenhuma notificação encontrada</p>
+    {% endfor %}
 
   </div>
 </section>
